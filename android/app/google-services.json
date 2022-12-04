@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "168611388654",
+    "project_id": "going-home-a47ce",
+    "storage_bucket": "going-home-a47ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168611388654:android:f1d7bf2ad40348d42227ff",
+        "android_client_info": {
+          "package_name": "going_home.app.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168611388654-lhufidarqealsa2k8a8tf53pvo7qbf6b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2NMzjwNaQ1MfpiQzJRqYj0j6BJy15vl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168611388654-lhufidarqealsa2k8a8tf53pvo7qbf6b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
