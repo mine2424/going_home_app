@@ -52,7 +52,8 @@ mixin _$ContactLocation {
   /// Heading is the horizontal direction of travel of this device, in degrees
   ///
   /// Always 0 on Web
-// @Default(0.0) double heading,
+  double get heading => throw _privateConstructorUsedError;
+
   /// timestamp of the LocationData
   double get time => throw _privateConstructorUsedError;
 
@@ -110,6 +111,7 @@ abstract class $ContactLocationCopyWith<$Res> {
       double altitude,
       double speed,
       double speedAccuracy,
+      double heading,
       double time,
       bool isMock,
       double headingAccuracy,
@@ -140,6 +142,7 @@ class _$ContactLocationCopyWithImpl<$Res, $Val extends ContactLocation>
     Object? altitude = null,
     Object? speed = null,
     Object? speedAccuracy = null,
+    Object? heading = null,
     Object? time = null,
     Object? isMock = null,
     Object? headingAccuracy = null,
@@ -177,6 +180,10 @@ class _$ContactLocationCopyWithImpl<$Res, $Val extends ContactLocation>
       speedAccuracy: null == speedAccuracy
           ? _value.speedAccuracy
           : speedAccuracy // ignore: cast_nullable_to_non_nullable
+              as double,
+      heading: null == heading
+          ? _value.heading
+          : heading // ignore: cast_nullable_to_non_nullable
               as double,
       time: null == time
           ? _value.time
@@ -230,6 +237,7 @@ abstract class _$$_ContactLocationCopyWith<$Res>
       double altitude,
       double speed,
       double speedAccuracy,
+      double heading,
       double time,
       bool isMock,
       double headingAccuracy,
@@ -258,6 +266,7 @@ class __$$_ContactLocationCopyWithImpl<$Res>
     Object? altitude = null,
     Object? speed = null,
     Object? speedAccuracy = null,
+    Object? heading = null,
     Object? time = null,
     Object? isMock = null,
     Object? headingAccuracy = null,
@@ -295,6 +304,10 @@ class __$$_ContactLocationCopyWithImpl<$Res>
       speedAccuracy: null == speedAccuracy
           ? _value.speedAccuracy
           : speedAccuracy // ignore: cast_nullable_to_non_nullable
+              as double,
+      heading: null == heading
+          ? _value.heading
+          : heading // ignore: cast_nullable_to_non_nullable
               as double,
       time: null == time
           ? _value.time
@@ -343,6 +356,7 @@ class _$_ContactLocation implements _ContactLocation {
       this.altitude = 0.0,
       this.speed = 0.0,
       this.speedAccuracy = 0.0,
+      this.heading = 0.0,
       this.time = 0.0,
       this.isMock = false,
       this.headingAccuracy = 0.0,
@@ -401,7 +415,10 @@ class _$_ContactLocation implements _ContactLocation {
   /// Heading is the horizontal direction of travel of this device, in degrees
   ///
   /// Always 0 on Web
-// @Default(0.0) double heading,
+  @override
+  @JsonKey()
+  final double heading;
+
   /// timestamp of the LocationData
   @override
   @JsonKey()
@@ -455,7 +472,7 @@ class _$_ContactLocation implements _ContactLocation {
 
   @override
   String toString() {
-    return 'ContactLocation(latitude: $latitude, longitude: $longitude, accuracy: $accuracy, verticalAccuracy: $verticalAccuracy, altitude: $altitude, speed: $speed, speedAccuracy: $speedAccuracy, time: $time, isMock: $isMock, headingAccuracy: $headingAccuracy, elapsedRealtimeNanos: $elapsedRealtimeNanos, elapsedRealtimeUncertaintyNanos: $elapsedRealtimeUncertaintyNanos, satelliteNumber: $satelliteNumber, provider: $provider, createdAt: $createdAt)';
+    return 'ContactLocation(latitude: $latitude, longitude: $longitude, accuracy: $accuracy, verticalAccuracy: $verticalAccuracy, altitude: $altitude, speed: $speed, speedAccuracy: $speedAccuracy, heading: $heading, time: $time, isMock: $isMock, headingAccuracy: $headingAccuracy, elapsedRealtimeNanos: $elapsedRealtimeNanos, elapsedRealtimeUncertaintyNanos: $elapsedRealtimeUncertaintyNanos, satelliteNumber: $satelliteNumber, provider: $provider, createdAt: $createdAt)';
   }
 
   @override
@@ -476,6 +493,7 @@ class _$_ContactLocation implements _ContactLocation {
             (identical(other.speed, speed) || other.speed == speed) &&
             (identical(other.speedAccuracy, speedAccuracy) ||
                 other.speedAccuracy == speedAccuracy) &&
+            (identical(other.heading, heading) || other.heading == heading) &&
             (identical(other.time, time) || other.time == time) &&
             (identical(other.isMock, isMock) || other.isMock == isMock) &&
             (identical(other.headingAccuracy, headingAccuracy) ||
@@ -505,6 +523,7 @@ class _$_ContactLocation implements _ContactLocation {
       altitude,
       speed,
       speedAccuracy,
+      heading,
       time,
       isMock,
       headingAccuracy,
@@ -537,6 +556,7 @@ abstract class _ContactLocation implements ContactLocation {
           final double altitude,
           final double speed,
           final double speedAccuracy,
+          final double heading,
           final double time,
           final bool isMock,
           final double headingAccuracy,
@@ -591,7 +611,9 @@ abstract class _ContactLocation implements ContactLocation {
   /// Heading is the horizontal direction of travel of this device, in degrees
   ///
   /// Always 0 on Web
-// @Default(0.0) double heading,
+  double get heading;
+  @override
+
   /// timestamp of the LocationData
   double get time;
   @override

@@ -21,9 +21,11 @@ ContactLocationHistory _$ContactLocationHistoryFromJson(
 
 /// @nodoc
 mixin _$ContactLocationHistory {
-  String get date => throw _privateConstructorUsedError;
+  String get reaction => throw _privateConstructorUsedError;
   @ContactLocationConverter()
   List<ContactLocation> get locations => throw _privateConstructorUsedError;
+  @NullableDatetimeTimestampConverter()
+  DateTime? get date => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,8 +40,9 @@ abstract class $ContactLocationHistoryCopyWith<$Res> {
       _$ContactLocationHistoryCopyWithImpl<$Res, ContactLocationHistory>;
   @useResult
   $Res call(
-      {String date,
-      @ContactLocationConverter() List<ContactLocation> locations});
+      {String reaction,
+      @ContactLocationConverter() List<ContactLocation> locations,
+      @NullableDatetimeTimestampConverter() DateTime? date});
 }
 
 /// @nodoc
@@ -56,18 +59,23 @@ class _$ContactLocationHistoryCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? date = null,
+    Object? reaction = null,
     Object? locations = null,
+    Object? date = freezed,
   }) {
     return _then(_value.copyWith(
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
+      reaction: null == reaction
+          ? _value.reaction
+          : reaction // ignore: cast_nullable_to_non_nullable
               as String,
       locations: null == locations
           ? _value.locations
           : locations // ignore: cast_nullable_to_non_nullable
               as List<ContactLocation>,
+      date: freezed == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -81,8 +89,9 @@ abstract class _$$_ContactLocationHistoryCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String date,
-      @ContactLocationConverter() List<ContactLocation> locations});
+      {String reaction,
+      @ContactLocationConverter() List<ContactLocation> locations,
+      @NullableDatetimeTimestampConverter() DateTime? date});
 }
 
 /// @nodoc
@@ -97,18 +106,23 @@ class __$$_ContactLocationHistoryCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? date = null,
+    Object? reaction = null,
     Object? locations = null,
+    Object? date = freezed,
   }) {
     return _then(_$_ContactLocationHistory(
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
+      reaction: null == reaction
+          ? _value.reaction
+          : reaction // ignore: cast_nullable_to_non_nullable
               as String,
       locations: null == locations
           ? _value._locations
           : locations // ignore: cast_nullable_to_non_nullable
               as List<ContactLocation>,
+      date: freezed == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -117,9 +131,11 @@ class __$$_ContactLocationHistoryCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ContactLocationHistory implements _ContactLocationHistory {
   const _$_ContactLocationHistory(
-      {this.date = '',
+      {this.reaction = '',
       @ContactLocationConverter()
-          final List<ContactLocation> locations = const <ContactLocation>[]})
+          final List<ContactLocation> locations = const <ContactLocation>[],
+      @NullableDatetimeTimestampConverter()
+          this.date})
       : _locations = locations;
 
   factory _$_ContactLocationHistory.fromJson(Map<String, dynamic> json) =>
@@ -127,7 +143,7 @@ class _$_ContactLocationHistory implements _ContactLocationHistory {
 
   @override
   @JsonKey()
-  final String date;
+  final String reaction;
   final List<ContactLocation> _locations;
   @override
   @JsonKey()
@@ -139,8 +155,12 @@ class _$_ContactLocationHistory implements _ContactLocationHistory {
   }
 
   @override
+  @NullableDatetimeTimestampConverter()
+  final DateTime? date;
+
+  @override
   String toString() {
-    return 'ContactLocationHistory(date: $date, locations: $locations)';
+    return 'ContactLocationHistory(reaction: $reaction, locations: $locations, date: $date)';
   }
 
   @override
@@ -148,15 +168,17 @@ class _$_ContactLocationHistory implements _ContactLocationHistory {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ContactLocationHistory &&
-            (identical(other.date, date) || other.date == date) &&
+            (identical(other.reaction, reaction) ||
+                other.reaction == reaction) &&
             const DeepCollectionEquality()
-                .equals(other._locations, _locations));
+                .equals(other._locations, _locations) &&
+            (identical(other.date, date) || other.date == date));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, date, const DeepCollectionEquality().hash(_locations));
+  int get hashCode => Object.hash(runtimeType, reaction,
+      const DeepCollectionEquality().hash(_locations), date);
 
   @JsonKey(ignore: true)
   @override
@@ -175,18 +197,22 @@ class _$_ContactLocationHistory implements _ContactLocationHistory {
 
 abstract class _ContactLocationHistory implements ContactLocationHistory {
   const factory _ContactLocationHistory(
-          {final String date,
-          @ContactLocationConverter() final List<ContactLocation> locations}) =
+          {final String reaction,
+          @ContactLocationConverter() final List<ContactLocation> locations,
+          @NullableDatetimeTimestampConverter() final DateTime? date}) =
       _$_ContactLocationHistory;
 
   factory _ContactLocationHistory.fromJson(Map<String, dynamic> json) =
       _$_ContactLocationHistory.fromJson;
 
   @override
-  String get date;
+  String get reaction;
   @override
   @ContactLocationConverter()
   List<ContactLocation> get locations;
+  @override
+  @NullableDatetimeTimestampConverter()
+  DateTime? get date;
   @override
   @JsonKey(ignore: true)
   _$$_ContactLocationHistoryCopyWith<_$_ContactLocationHistory> get copyWith =>

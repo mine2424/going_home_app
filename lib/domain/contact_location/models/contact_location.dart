@@ -40,7 +40,7 @@ class ContactLocation with _$ContactLocation {
     /// Heading is the horizontal direction of travel of this device, in degrees
     ///
     /// Always 0 on Web
-    // @Default(0.0) double heading,
+    @Default(0.0) double heading,
 
     /// timestamp of the LocationData
     @Default(0.0) double time,
@@ -92,10 +92,10 @@ class ContactLocation with _$ContactLocation {
       altitude: locationData.altitude!,
       speed: locationData.speed!,
       speedAccuracy: locationData.speedAccuracy!,
-      // heading: locationData.heading!,
+      heading: locationData.heading!,
       time: locationData.time!,
       isMock: locationData.isMock!,
-      elapsedRealtimeNanos: locationData.elaspedRealTimeNanos ?? 0.0,
+      elapsedRealtimeNanos: locationData.elapsedRealtimeNanos ?? 0.0,
     );
   }
 }

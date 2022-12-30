@@ -1,5 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:going_home_app/common/converters/datetime_to_timestamp_converter.dart.dart';
+import 'package:going_home_app/common/converters/user_converter.dart';
 import 'package:going_home_app/domain/contact/enums/notify_area.dart';
+import 'package:going_home_app/domain/user/models/user.dart';
 
 part 'contact.freezed.dart';
 part 'contact.g.dart';
@@ -8,20 +11,19 @@ part 'contact.g.dart';
 class Contact with _$Contact {
   const factory Contact({
     @Default('') String contactId,
-    @Default(<String>[]) List<String> userIds,
+    @UserConverter() @Default(<User>[]) List<User> users,
     @Default(NotifyArea.none) NotifyArea notifyArea,
-
-    // TODO: localの永続化DBに保存する必要があるかも
-    @Default(false) bool alreadyNotified,
-
-    // TODO: 時系列にするためにcontactごとの位置情報を保存する必要があるかも
-    // @Default([]) Map<String,List<ContactLocation>> locations,
+    // 到着したかどうか（offの場合はtrue）
+    @Default(true) bool isMatched,
+    @Default('') String word,
+    @NullableDatetimeTimestampConverter() DateTime? createdAt,
+    @NullableDatetimeTimestampConverter() DateTime? updatedAt,
   }) = _Contact;
 
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);
 
-  static String get colPath => 'users/contacts/';
+  static String get colPath => 'public/contact/v1';
 
-  static String docPath(String contactId) => 'users/contacts/$contactId';
+  static String docPath(String contactId) => '$colPath/$contactId';
 }

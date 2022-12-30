@@ -9,19 +9,22 @@ part of 'contact_location_history.dart';
 _$_ContactLocationHistory _$$_ContactLocationHistoryFromJson(
         Map<String, dynamic> json) =>
     _$_ContactLocationHistory(
-      date: json['date'] as String? ?? '',
+      reaction: json['reaction'] as String? ?? '',
       locations: (json['locations'] as List<dynamic>?)
               ?.map((e) => const ContactLocationConverter()
                   .fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <ContactLocation>[],
+      date: const NullableDatetimeTimestampConverter()
+          .fromJson(json['date'] as Timestamp?),
     );
 
 Map<String, dynamic> _$$_ContactLocationHistoryToJson(
         _$_ContactLocationHistory instance) =>
     <String, dynamic>{
-      'date': instance.date,
+      'reaction': instance.reaction,
       'locations': instance.locations
           .map(const ContactLocationConverter().toJson)
           .toList(),
+      'date': const NullableDatetimeTimestampConverter().toJson(instance.date),
     };

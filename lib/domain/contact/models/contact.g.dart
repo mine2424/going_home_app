@@ -8,22 +8,33 @@ part of 'contact.dart';
 
 _$_Contact _$$_ContactFromJson(Map<String, dynamic> json) => _$_Contact(
       contactId: json['contactId'] as String? ?? '',
-      userIds: (json['userIds'] as List<dynamic>?)
-              ?.map((e) => e as String)
+      users: (json['users'] as List<dynamic>?)
+              ?.map((e) =>
+                  const UserConverter().fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const <String>[],
+          const <User>[],
       notifyArea:
           $enumDecodeNullable(_$NotifyAreaEnumMap, json['notifyArea']) ??
               NotifyArea.none,
-      alreadyNotified: json['alreadyNotified'] as bool? ?? false,
+      isMatched: json['isMatched'] as bool? ?? true,
+      word: json['word'] as String? ?? '',
+      createdAt: const NullableDatetimeTimestampConverter()
+          .fromJson(json['createdAt'] as Timestamp?),
+      updatedAt: const NullableDatetimeTimestampConverter()
+          .fromJson(json['updatedAt'] as Timestamp?),
     );
 
 Map<String, dynamic> _$$_ContactToJson(_$_Contact instance) =>
     <String, dynamic>{
       'contactId': instance.contactId,
-      'userIds': instance.userIds,
+      'users': instance.users.map(const UserConverter().toJson).toList(),
       'notifyArea': _$NotifyAreaEnumMap[instance.notifyArea]!,
-      'alreadyNotified': instance.alreadyNotified,
+      'isMatched': instance.isMatched,
+      'word': instance.word,
+      'createdAt':
+          const NullableDatetimeTimestampConverter().toJson(instance.createdAt),
+      'updatedAt':
+          const NullableDatetimeTimestampConverter().toJson(instance.updatedAt),
     };
 
 const _$NotifyAreaEnumMap = {

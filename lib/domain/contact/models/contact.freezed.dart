@@ -21,10 +21,16 @@ Contact _$ContactFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Contact {
   String get contactId => throw _privateConstructorUsedError;
-  List<String> get userIds => throw _privateConstructorUsedError;
+  @UserConverter()
+  List<User> get users => throw _privateConstructorUsedError;
   NotifyArea get notifyArea =>
-      throw _privateConstructorUsedError; // TODO: localの永続化DBに保存する必要があるかも
-  bool get alreadyNotified => throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError; // 到着したかどうか（offの場合はtrue）
+  bool get isMatched => throw _privateConstructorUsedError;
+  String get word => throw _privateConstructorUsedError;
+  @NullableDatetimeTimestampConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @NullableDatetimeTimestampConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,9 +44,12 @@ abstract class $ContactCopyWith<$Res> {
   @useResult
   $Res call(
       {String contactId,
-      List<String> userIds,
+      @UserConverter() List<User> users,
       NotifyArea notifyArea,
-      bool alreadyNotified});
+      bool isMatched,
+      String word,
+      @NullableDatetimeTimestampConverter() DateTime? createdAt,
+      @NullableDatetimeTimestampConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -57,27 +66,42 @@ class _$ContactCopyWithImpl<$Res, $Val extends Contact>
   @override
   $Res call({
     Object? contactId = null,
-    Object? userIds = null,
+    Object? users = null,
     Object? notifyArea = null,
-    Object? alreadyNotified = null,
+    Object? isMatched = null,
+    Object? word = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       contactId: null == contactId
           ? _value.contactId
           : contactId // ignore: cast_nullable_to_non_nullable
               as String,
-      userIds: null == userIds
-          ? _value.userIds
-          : userIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      users: null == users
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<User>,
       notifyArea: null == notifyArea
           ? _value.notifyArea
           : notifyArea // ignore: cast_nullable_to_non_nullable
               as NotifyArea,
-      alreadyNotified: null == alreadyNotified
-          ? _value.alreadyNotified
-          : alreadyNotified // ignore: cast_nullable_to_non_nullable
+      isMatched: null == isMatched
+          ? _value.isMatched
+          : isMatched // ignore: cast_nullable_to_non_nullable
               as bool,
+      word: null == word
+          ? _value.word
+          : word // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -91,9 +115,12 @@ abstract class _$$_ContactCopyWith<$Res> implements $ContactCopyWith<$Res> {
   @useResult
   $Res call(
       {String contactId,
-      List<String> userIds,
+      @UserConverter() List<User> users,
       NotifyArea notifyArea,
-      bool alreadyNotified});
+      bool isMatched,
+      String word,
+      @NullableDatetimeTimestampConverter() DateTime? createdAt,
+      @NullableDatetimeTimestampConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -107,27 +134,42 @@ class __$$_ContactCopyWithImpl<$Res>
   @override
   $Res call({
     Object? contactId = null,
-    Object? userIds = null,
+    Object? users = null,
     Object? notifyArea = null,
-    Object? alreadyNotified = null,
+    Object? isMatched = null,
+    Object? word = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$_Contact(
       contactId: null == contactId
           ? _value.contactId
           : contactId // ignore: cast_nullable_to_non_nullable
               as String,
-      userIds: null == userIds
-          ? _value._userIds
-          : userIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      users: null == users
+          ? _value._users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<User>,
       notifyArea: null == notifyArea
           ? _value.notifyArea
           : notifyArea // ignore: cast_nullable_to_non_nullable
               as NotifyArea,
-      alreadyNotified: null == alreadyNotified
-          ? _value.alreadyNotified
-          : alreadyNotified // ignore: cast_nullable_to_non_nullable
+      isMatched: null == isMatched
+          ? _value.isMatched
+          : isMatched // ignore: cast_nullable_to_non_nullable
               as bool,
+      word: null == word
+          ? _value.word
+          : word // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -137,10 +179,13 @@ class __$$_ContactCopyWithImpl<$Res>
 class _$_Contact implements _Contact {
   const _$_Contact(
       {this.contactId = '',
-      final List<String> userIds = const <String>[],
+      @UserConverter() final List<User> users = const <User>[],
       this.notifyArea = NotifyArea.none,
-      this.alreadyNotified = false})
-      : _userIds = userIds;
+      this.isMatched = true,
+      this.word = '',
+      @NullableDatetimeTimestampConverter() this.createdAt,
+      @NullableDatetimeTimestampConverter() this.updatedAt})
+      : _users = users;
 
   factory _$_Contact.fromJson(Map<String, dynamic> json) =>
       _$$_ContactFromJson(json);
@@ -148,26 +193,36 @@ class _$_Contact implements _Contact {
   @override
   @JsonKey()
   final String contactId;
-  final List<String> _userIds;
+  final List<User> _users;
   @override
   @JsonKey()
-  List<String> get userIds {
-    if (_userIds is EqualUnmodifiableListView) return _userIds;
+  @UserConverter()
+  List<User> get users {
+    if (_users is EqualUnmodifiableListView) return _users;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_userIds);
+    return EqualUnmodifiableListView(_users);
   }
 
   @override
   @JsonKey()
   final NotifyArea notifyArea;
-// TODO: localの永続化DBに保存する必要があるかも
+// 到着したかどうか（offの場合はtrue）
   @override
   @JsonKey()
-  final bool alreadyNotified;
+  final bool isMatched;
+  @override
+  @JsonKey()
+  final String word;
+  @override
+  @NullableDatetimeTimestampConverter()
+  final DateTime? createdAt;
+  @override
+  @NullableDatetimeTimestampConverter()
+  final DateTime? updatedAt;
 
   @override
   String toString() {
-    return 'Contact(contactId: $contactId, userIds: $userIds, notifyArea: $notifyArea, alreadyNotified: $alreadyNotified)';
+    return 'Contact(contactId: $contactId, users: $users, notifyArea: $notifyArea, isMatched: $isMatched, word: $word, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -177,11 +232,16 @@ class _$_Contact implements _Contact {
             other is _$_Contact &&
             (identical(other.contactId, contactId) ||
                 other.contactId == contactId) &&
-            const DeepCollectionEquality().equals(other._userIds, _userIds) &&
+            const DeepCollectionEquality().equals(other._users, _users) &&
             (identical(other.notifyArea, notifyArea) ||
                 other.notifyArea == notifyArea) &&
-            (identical(other.alreadyNotified, alreadyNotified) ||
-                other.alreadyNotified == alreadyNotified));
+            (identical(other.isMatched, isMatched) ||
+                other.isMatched == isMatched) &&
+            (identical(other.word, word) || other.word == word) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(ignore: true)
@@ -189,9 +249,12 @@ class _$_Contact implements _Contact {
   int get hashCode => Object.hash(
       runtimeType,
       contactId,
-      const DeepCollectionEquality().hash(_userIds),
+      const DeepCollectionEquality().hash(_users),
       notifyArea,
-      alreadyNotified);
+      isMatched,
+      word,
+      createdAt,
+      updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -209,21 +272,34 @@ class _$_Contact implements _Contact {
 
 abstract class _Contact implements Contact {
   const factory _Contact(
-      {final String contactId,
-      final List<String> userIds,
-      final NotifyArea notifyArea,
-      final bool alreadyNotified}) = _$_Contact;
+          {final String contactId,
+          @UserConverter() final List<User> users,
+          final NotifyArea notifyArea,
+          final bool isMatched,
+          final String word,
+          @NullableDatetimeTimestampConverter() final DateTime? createdAt,
+          @NullableDatetimeTimestampConverter() final DateTime? updatedAt}) =
+      _$_Contact;
 
   factory _Contact.fromJson(Map<String, dynamic> json) = _$_Contact.fromJson;
 
   @override
   String get contactId;
   @override
-  List<String> get userIds;
+  @UserConverter()
+  List<User> get users;
   @override
   NotifyArea get notifyArea;
-  @override // TODO: localの永続化DBに保存する必要があるかも
-  bool get alreadyNotified;
+  @override // 到着したかどうか（offの場合はtrue）
+  bool get isMatched;
+  @override
+  String get word;
+  @override
+  @NullableDatetimeTimestampConverter()
+  DateTime? get createdAt;
+  @override
+  @NullableDatetimeTimestampConverter()
+  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$_ContactCopyWith<_$_Contact> get copyWith =>

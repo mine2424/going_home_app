@@ -10,3 +10,9 @@ rm -rf Pods
 rm -rf .symlinks
 pod repo update
 pod update
+
+cd ..
+
+flutter pub cache repair
+flutter packages pub get
+flutter pub get
