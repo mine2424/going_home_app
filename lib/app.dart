@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:going_home_app/common/color.dart';
 import 'package:going_home_app/common/theme.dart';
 import 'package:going_home_app/domain/auth/auth_service.dart';
 import 'package:going_home_app/domain/auth/enums/auth_status.dart';
+import 'package:going_home_app/pages/auth/onBoarding_page.dart';
 import 'package:going_home_app/pages/contact/contact_home_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -31,19 +33,29 @@ class App extends ConsumerWidget {
       return status;
     }
 
-    return MaterialApp(
+    return MaterialApp.router(
       title: F.title,
       theme: buildLightTheme(),
       darkTheme: buildDarkTheme(),
       locale: kLocale,
+      routerConfig: _router,
       // home: (_judgeAuthState() == AuthStatus.authenticated)
       //     ? const MyHomePage()
       //     : const OnBoardingPage(),
 
       // ---- For Development ----
-      home: const ContactHomePage(),
+      // home: const ContactHomePage(),
       // home: const OnBoardingPage(),
       // -------------------------
     );
   }
 }
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const ContactHomePage(),
+    ),
+  ],
+);

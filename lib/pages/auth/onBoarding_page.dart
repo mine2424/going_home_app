@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:going_home_app/common/color.dart';
+import 'package:going_home_app/pages/auth/add_profile_page.dart';
 import 'package:going_home_app/widgets/button/widely_button.dart';
 
 class OnBoardingPage extends StatelessWidget {
@@ -31,7 +32,11 @@ class OnBoardingPage extends StatelessWidget {
                       WidelyButton(
                         label: '新しく始める',
                         onPressed: () {
-                          //
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AddProfilePage()));
                         },
                         backgroundColor: kDarkGray,
                         textStyle: Theme.of(context)
