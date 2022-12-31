@@ -5,14 +5,29 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
+final authStatusProvider = StreamProvider<AuthStatus?>((ref) async* {
+  final authStatusStream = ref.watch(authServiceProvider).authStateChanges();
+  await for (final authStatus in authStatusStream) {
+    if (authStatus == null) {
+      yield AuthStatus.none;
+    } else {
+      yield AuthStatus.authenticated;
+    }
+  }
+});
 
 class AuthService {
   final _auth = FirebaseAuth.instance;
 
   String get currentUid => _auth.currentUser!.uid;
 
+  Stream<User?> authStateChanges() {
+    return _auth.authStateChanges();
+  }
+
   Future<AuthStatus> listenAuthStatus() async {
     final currentUser = _auth.currentUser;
+    _auth.authStateChanges();
 
     try {
       if (currentUser?.uid != null) {
@@ -21,17 +36,6 @@ class AuthService {
 
       return AuthStatus.none;
     } on Exception catch (e) {
-      print(e);
-      return AuthStatus.error;
-    }
-  }
-
-  Future<AuthStatus> createAnonymousUser() async {
-    try {
-      final user = await _auth.signInAnonymously();
-      print(user);
-      return AuthStatus.authenticated;
-    } catch (e) {
       print(e);
       return AuthStatus.error;
     }
