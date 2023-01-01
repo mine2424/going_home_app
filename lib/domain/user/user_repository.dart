@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:going_home_app/domain/user/models/user.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final userRepositoryprovider =
+final userRepositoryProvider =
     Provider<UserRepository>((ref) => UserRepository());
 
 class UserRepository {

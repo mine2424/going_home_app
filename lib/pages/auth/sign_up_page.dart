@@ -8,10 +8,38 @@ import 'package:going_home_app/common/consts.dart';
 import 'package:going_home_app/pages/auth/notifier/auth_notifier.dart';
 import 'package:going_home_app/router.dart';
 import 'package:going_home_app/widgets/button/widely_button.dart';
+import 'package:going_home_app/widgets/dialog/form_dialog.dart';
+import 'package:going_home_app/widgets/dialog/single_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LoginPage extends ConsumerWidget {
-  const LoginPage({super.key});
+class SignUpPage extends ConsumerWidget {
+  const SignUpPage({super.key});
+
+  void judgeNavigation(BuildContext context, AuthNotifier authNotifier) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => FormDialog(
+        titleText: '名前を入力してください',
+        memoText: '登録後も変更ができます。',
+        hintText: '名前',
+        textController: authNotifier.nameController,
+        onPressed: () {
+          if (authNotifier.nameController.text.isEmpty) {
+            print('名前が入力されていません');
+            const SingleDialog(
+              title: '名前を入力してください',
+              buttonText: 'OK',
+            ).show(context);
+            return;
+          } else {
+            print('名前が入力されています');
+            context.go(RoutePath.contact_home.toStr);
+            return;
+          }
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +49,7 @@ class LoginPage extends ConsumerWidget {
         backgroundColor: kLightPrimaryColor,
         elevation: 0,
         title: Text(
-          'ログイン',
+          '新規登録',
           style: Theme.of(context)
               .textTheme
               .headline4!
@@ -53,8 +81,8 @@ class LoginPage extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     onPressed: () async {
-                      await authNotifier.signInWithGoogle();
-                      context.pushReplacement(RoutePath.contact_home.toStr);
+                      // await authNotifier.signInWithGoogle();
+                      judgeNavigation(context, authNotifier);
                     },
                   ),
                 ),
@@ -68,8 +96,8 @@ class LoginPage extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     onPressed: () async {
-                      await authNotifier.signInWithApple();
-                      context.pushReplacement(RoutePath.contact_home.toStr);
+                      // await authNotifier.signInWithApple();
+                      judgeNavigation(context, authNotifier);
                     },
                   ),
                 ),
@@ -93,10 +121,18 @@ class LoginPage extends ConsumerWidget {
                 ),
                 SizedBox(height: Consts.space4x(4)),
                 WidelyButton(
-                  label: 'メールアドレスでログインする',
+                  label: 'メールアドレスで登録する',
                   onPressed: () async {
-                    await authNotifier.createUserWithEmailAndPassword();
-                    context.pushReplacement(RoutePath.contact_home.toStr);
+                    if (authNotifier.emailController.text.isEmpty ||
+                        authNotifier.passwordController.text.isEmpty) {
+                      const SingleDialog(
+                        title: 'メールアドレスとパスワードを入力してください',
+                        buttonText: 'OK',
+                      ).show(context);
+                      return;
+                    }
+                    // await authNotifier.createUserWithEmailAndPassword();
+                    judgeNavigation(context, authNotifier);
                   },
                   backgroundColor: kDarkGray,
                   textStyle: Theme.of(context)
@@ -110,13 +146,13 @@ class LoginPage extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('アカウントをお持ちでない方は'),
+                    const Text('すでにアカウントをお持ちの方は'),
                     TextButton(
                       onPressed: () {
-                        context.go(RoutePath.signUp.toStr);
+                        context.go(RoutePath.login.toStr);
                       },
                       child: const Text(
-                        'こちら',
+                        'ログイン',
                         style: TextStyle(
                           color: kBlack,
                           fontWeight: FontWeight.bold,

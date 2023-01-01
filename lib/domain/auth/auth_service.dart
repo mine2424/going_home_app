@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
+
 final authStatusProvider = StreamProvider<AuthStatus?>((ref) async* {
   final authStatusStream = ref.watch(authServiceProvider).authStateChanges();
   await for (final authStatus in authStatusStream) {

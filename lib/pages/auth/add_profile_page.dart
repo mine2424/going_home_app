@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:going_home_app/common/constants.dart';
+import 'package:going_home_app/common/consts.dart';
 import 'package:going_home_app/widgets/other/dash_circle_painter.dart';
 
 class AddProfilePage extends StatelessWidget {
@@ -12,49 +12,59 @@ class AddProfilePage extends StatelessWidget {
         title: const Text('プロフィールを追加'),
       ),
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          DashedCircle(
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('assets/images/going_home_onboarding.png'),
-                  fit: BoxFit.cover,
+          child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Consts.space4x(4)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            DashedCircle(
+              color: Colors.deepOrangeAccent,
+              child: Padding(
+                padding: EdgeInsets.all(Consts.space4x(1.5)),
+                child: const CircleAvatar(
+                  radius: 70,
+                  backgroundImage: NetworkImage(
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Bill_Gates_Buys_Skype_%285707954468%29.jpg/2560px-Bill_Gates_Buys_Skype_%285707954468%29.jpg',
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(height: Constants.space4x(2)),
-          Text('name'),
-          SizedBox(height: Constants.space4x(1)),
-          // TODO: idはコピペ可能にする
-          Text('id: 1234567890'),
-          SizedBox(height: Constants.space4x(6)),
-          TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '名前',
+            SizedBox(height: Consts.space4x(2)),
+            // const Text('name'),
+            SizedBox(height: Consts.space4x(1)),
+            // TODO: idはコピペ可能にする
+            // const Text('id: 1234567890'),
+            SizedBox(height: Consts.space4x(6)),
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: '名前',
+              ),
             ),
-          ),
-          SizedBox(height: Constants.space4x(2)),
-          TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '職業',
+            SizedBox(height: Consts.space4x(2)),
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: '名前',
+              ),
             ),
-          ),
-          SizedBox(height: Constants.space4x(2)),
-          TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: '生年月日',
+            SizedBox(height: Consts.space4x(2)),
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: '名前',
+              ),
             ),
-          ),
-        ],
+            SizedBox(height: Consts.space4x(2)),
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: '名前',
+              ),
+            ),
+            SizedBox(height: Consts.space4x(2)),
+          ],
+        ),
       )),
     );
   }
