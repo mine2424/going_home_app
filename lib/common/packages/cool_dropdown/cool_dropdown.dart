@@ -133,6 +133,8 @@ class CoolDropdown extends StatefulWidget {
         }
       }
     }
+    const spreadRadius = 10.0;
+    final shadowColor = Colors.grey.withOpacity(0.3);
     // box decoration 셋팅
     this.resultBD = resultBD ??
         BoxDecoration(
@@ -140,8 +142,8 @@ class CoolDropdown extends StatefulWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
+              color: shadowColor,
+              spreadRadius: spreadRadius,
               blurRadius: 10,
               offset: const Offset(0, 1), // changes position of shadow
             ),
@@ -153,8 +155,8 @@ class CoolDropdown extends StatefulWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
+              color: shadowColor,
+              spreadRadius: spreadRadius,
               blurRadius: 10,
               offset: const Offset(0, 1),
             ),
@@ -294,15 +296,19 @@ class _CoolDropdownState extends State<CoolDropdown>
   @override
   void initState() {
     rotationController = AnimationController(
-        duration: au.isAnimation(
-            status: widget.isAnimation,
-            duration: const Duration(milliseconds: 150)),
-        vsync: this);
+      duration: au.isAnimation(
+        status: widget.isAnimation,
+        duration: const Duration(milliseconds: 150),
+      ),
+      vsync: this,
+    );
     sizeController = AnimationController(
-        vsync: this,
-        duration: au.isAnimation(
-            status: widget.isAnimation,
-            duration: const Duration(milliseconds: 150)));
+      vsync: this,
+      duration: au.isAnimation(
+        status: widget.isAnimation,
+        duration: const Duration(milliseconds: 150),
+      ),
+    );
     textWidth = CurvedAnimation(
       parent: sizeController,
       curve: Curves.fastOutSlowIn,

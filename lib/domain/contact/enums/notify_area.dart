@@ -18,7 +18,7 @@ enum NotifyArea {
   far,
 
   // 100km以内
-  veryFar,
+  veryFar;
 }
 
 class NotifyAreaConverter implements JsonConverter<NotifyArea, String> {
