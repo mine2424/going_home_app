@@ -16,7 +16,6 @@ class User with _$User {
     @Default(<String>[]) List<String> contactIds,
     @Default(<String>[]) List<String> familyContactIds,
     @Default('') String name,
-    @Default('') String password,
     @Default('') String profileImageUrl,
     @Default('') String occupation,
     @SexConverter() @Default(Sex.none) Sex sex,

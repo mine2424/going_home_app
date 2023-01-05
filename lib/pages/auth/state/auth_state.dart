@@ -9,7 +9,8 @@ part 'auth_state.g.dart';
 class AuthState with _$AuthState {
   const factory AuthState({
     @Default(User()) User user,
-    @Default(false) isLoading,
+    @Default(false) bool isLoading,
+    @Default(false) bool isFirstSignUp,
     @NullableDatetimeTimestampConverter() DateTime? createdAt,
   }) = _AuthState;
 

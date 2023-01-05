@@ -21,7 +21,8 @@ AuthState _$AuthStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AuthState {
   User get user => throw _privateConstructorUsedError;
-  dynamic get isLoading => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isFirstSignUp => throw _privateConstructorUsedError;
   @NullableDatetimeTimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
 
@@ -38,7 +39,8 @@ abstract class $AuthStateCopyWith<$Res> {
   @useResult
   $Res call(
       {User user,
-      dynamic isLoading,
+      bool isLoading,
+      bool isFirstSignUp,
       @NullableDatetimeTimestampConverter() DateTime? createdAt});
 
   $UserCopyWith<$Res> get user;
@@ -58,7 +60,8 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   @override
   $Res call({
     Object? user = null,
-    Object? isLoading = freezed,
+    Object? isLoading = null,
+    Object? isFirstSignUp = null,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -66,10 +69,14 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
-      isLoading: freezed == isLoading
+      isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as bool,
+      isFirstSignUp: null == isFirstSignUp
+          ? _value.isFirstSignUp
+          : isFirstSignUp // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -95,7 +102,8 @@ abstract class _$$_AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
   @useResult
   $Res call(
       {User user,
-      dynamic isLoading,
+      bool isLoading,
+      bool isFirstSignUp,
       @NullableDatetimeTimestampConverter() DateTime? createdAt});
 
   @override
@@ -114,7 +122,8 @@ class __$$_AuthStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? user = null,
-    Object? isLoading = freezed,
+    Object? isLoading = null,
+    Object? isFirstSignUp = null,
     Object? createdAt = freezed,
   }) {
     return _then(_$_AuthState(
@@ -122,7 +131,14 @@ class __$$_AuthStateCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
-      isLoading: freezed == isLoading ? _value.isLoading! : isLoading,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isFirstSignUp: null == isFirstSignUp
+          ? _value.isFirstSignUp
+          : isFirstSignUp // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -137,6 +153,7 @@ class _$_AuthState implements _AuthState {
   const _$_AuthState(
       {this.user = const User(),
       this.isLoading = false,
+      this.isFirstSignUp = false,
       @NullableDatetimeTimestampConverter() this.createdAt});
 
   factory _$_AuthState.fromJson(Map<String, dynamic> json) =>
@@ -147,14 +164,17 @@ class _$_AuthState implements _AuthState {
   final User user;
   @override
   @JsonKey()
-  final dynamic isLoading;
+  final bool isLoading;
+  @override
+  @JsonKey()
+  final bool isFirstSignUp;
   @override
   @NullableDatetimeTimestampConverter()
   final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'AuthState(user: $user, isLoading: $isLoading, createdAt: $createdAt)';
+    return 'AuthState(user: $user, isLoading: $isLoading, isFirstSignUp: $isFirstSignUp, createdAt: $createdAt)';
   }
 
   @override
@@ -163,15 +183,18 @@ class _$_AuthState implements _AuthState {
         (other.runtimeType == runtimeType &&
             other is _$_AuthState &&
             (identical(other.user, user) || other.user == user) &&
-            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading) &&
+            (identical(other.isFirstSignUp, isFirstSignUp) ||
+                other.isFirstSignUp == isFirstSignUp) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user,
-      const DeepCollectionEquality().hash(isLoading), createdAt);
+  int get hashCode =>
+      Object.hash(runtimeType, user, isLoading, isFirstSignUp, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -190,7 +213,8 @@ class _$_AuthState implements _AuthState {
 abstract class _AuthState implements AuthState {
   const factory _AuthState(
           {final User user,
-          final dynamic isLoading,
+          final bool isLoading,
+          final bool isFirstSignUp,
           @NullableDatetimeTimestampConverter() final DateTime? createdAt}) =
       _$_AuthState;
 
@@ -200,7 +224,9 @@ abstract class _AuthState implements AuthState {
   @override
   User get user;
   @override
-  dynamic get isLoading;
+  bool get isLoading;
+  @override
+  bool get isFirstSignUp;
   @override
   @NullableDatetimeTimestampConverter()
   DateTime? get createdAt;

@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:location/location.dart';
 
-final locationServiceProvider =
+final contactLocationServiceProvider =
     Provider<ContactLocationService>((ref) => const ContactLocationService());
 
 class ContactLocationService {

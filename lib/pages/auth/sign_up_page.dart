@@ -15,8 +15,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class SignUpPage extends ConsumerWidget {
   const SignUpPage({super.key});
 
-  void judgeNavigation(BuildContext context, AuthNotifier authNotifier) {
-    showDialog(
+  Future<void> judgeNavigation(
+    BuildContext context,
+    AuthNotifier authNotifier,
+  ) async {
+    await showDialog(
       context: context,
       builder: (BuildContext context) => FormDialog(
         titleText: '名前を入力してください',
@@ -25,20 +28,18 @@ class SignUpPage extends ConsumerWidget {
         textController: authNotifier.nameController,
         onPressed: () {
           if (authNotifier.nameController.text.isEmpty) {
-            print('名前が入力されていません');
             const SingleDialog(
               title: '名前を入力してください',
               buttonText: 'OK',
             ).show(context);
             return;
-          } else {
-            print('名前が入力されています');
-            context.go(RoutePath.contact_home.toStr);
-            return;
           }
+          context.pop();
+          return;
         },
       ),
     );
+    return;
   }
 
   @override
@@ -81,8 +82,10 @@ class SignUpPage extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     onPressed: () async {
-                      // await authNotifier.signInWithGoogle();
-                      judgeNavigation(context, authNotifier);
+                      await judgeNavigation(context, authNotifier);
+                      await authNotifier.signInWithGoogle();
+                      await authNotifier.addUser();
+                      context.go(RoutePath.contact_home.toStr);
                     },
                   ),
                 ),
@@ -96,8 +99,10 @@ class SignUpPage extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(40),
                     ),
                     onPressed: () async {
-                      // await authNotifier.signInWithApple();
-                      judgeNavigation(context, authNotifier);
+                      await judgeNavigation(context, authNotifier);
+                      await authNotifier.signInWithApple();
+                      await authNotifier.addUser();
+                      context.go(RoutePath.contact_home.toStr);
                     },
                   ),
                 ),
@@ -117,6 +122,7 @@ class SignUpPage extends ConsumerWidget {
                     border: OutlineInputBorder(),
                     labelText: 'パスワード',
                   ),
+                  obscureText: true,
                   controller: authNotifier.passwordController,
                 ),
                 SizedBox(height: Consts.space4x(4)),
@@ -131,8 +137,11 @@ class SignUpPage extends ConsumerWidget {
                       ).show(context);
                       return;
                     }
-                    // await authNotifier.createUserWithEmailAndPassword();
-                    judgeNavigation(context, authNotifier);
+
+                    await judgeNavigation(context, authNotifier);
+                    await authNotifier.createUserWithEmailAndPassword();
+                    await authNotifier.addUser();
+                    // context.go(RoutePath.contact_home.toStr);
                   },
                   backgroundColor: kDarkGray,
                   textStyle: Theme.of(context)

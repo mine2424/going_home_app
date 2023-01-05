@@ -8,16 +8,27 @@ part of 'contact.dart';
 
 _$_Contact _$$_ContactFromJson(Map<String, dynamic> json) => _$_Contact(
       contactId: json['contactId'] as String? ?? '',
+      word: json['word'] as String? ?? '',
+      contactName: json['contactName'] as String? ?? '',
+      isMatched: json['isMatched'] as bool? ?? true,
+      isFavorite: json['isFavorite'] as bool? ?? false,
+      notifyArea:
+          $enumDecodeNullable(_$NotifyAreaEnumMap, json['notifyArea']) ??
+              NotifyArea.none,
       users: (json['users'] as List<dynamic>?)
               ?.map((e) =>
                   const UserConverter().fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <User>[],
-      notifyArea:
-          $enumDecodeNullable(_$NotifyAreaEnumMap, json['notifyArea']) ??
-              NotifyArea.none,
-      isMatched: json['isMatched'] as bool? ?? true,
-      word: json['word'] as String? ?? '',
+      currentGoalLocation: json['currentGoalLocation'] == null
+          ? const ContactLocation()
+          : const ContactLocationConverter()
+              .fromJson(json['currentGoalLocation'] as Map<String, dynamic>),
+      goalLocationList: (json['goalLocationList'] as List<dynamic>?)
+              ?.map((e) => const ContactLocationConverter()
+                  .fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <ContactLocation>[],
       createdAt: const NullableDatetimeTimestampConverter()
           .fromJson(json['createdAt'] as Timestamp?),
       updatedAt: const NullableDatetimeTimestampConverter()
@@ -27,10 +38,17 @@ _$_Contact _$$_ContactFromJson(Map<String, dynamic> json) => _$_Contact(
 Map<String, dynamic> _$$_ContactToJson(_$_Contact instance) =>
     <String, dynamic>{
       'contactId': instance.contactId,
-      'users': instance.users.map(const UserConverter().toJson).toList(),
-      'notifyArea': _$NotifyAreaEnumMap[instance.notifyArea]!,
-      'isMatched': instance.isMatched,
       'word': instance.word,
+      'contactName': instance.contactName,
+      'isMatched': instance.isMatched,
+      'isFavorite': instance.isFavorite,
+      'notifyArea': _$NotifyAreaEnumMap[instance.notifyArea]!,
+      'users': instance.users.map(const UserConverter().toJson).toList(),
+      'currentGoalLocation':
+          const ContactLocationConverter().toJson(instance.currentGoalLocation),
+      'goalLocationList': instance.goalLocationList
+          .map(const ContactLocationConverter().toJson)
+          .toList(),
       'createdAt':
           const NullableDatetimeTimestampConverter().toJson(instance.createdAt),
       'updatedAt':

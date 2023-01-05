@@ -27,7 +27,6 @@ mixin _$User {
   List<String> get contactIds => throw _privateConstructorUsedError;
   List<String> get familyContactIds => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
   String get profileImageUrl => throw _privateConstructorUsedError;
   String get occupation => throw _privateConstructorUsedError;
   @SexConverter()
@@ -57,7 +56,6 @@ abstract class $UserCopyWith<$Res> {
       List<String> contactIds,
       List<String> familyContactIds,
       String name,
-      String password,
       String profileImageUrl,
       String occupation,
       @SexConverter() Sex sex,
@@ -86,7 +84,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? contactIds = null,
     Object? familyContactIds = null,
     Object? name = null,
-    Object? password = null,
     Object? profileImageUrl = null,
     Object? occupation = null,
     Object? sex = null,
@@ -122,10 +119,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
               as String,
       profileImageUrl: null == profileImageUrl
           ? _value.profileImageUrl
@@ -169,7 +162,6 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       List<String> contactIds,
       List<String> familyContactIds,
       String name,
-      String password,
       String profileImageUrl,
       String occupation,
       @SexConverter() Sex sex,
@@ -194,7 +186,6 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? contactIds = null,
     Object? familyContactIds = null,
     Object? name = null,
-    Object? password = null,
     Object? profileImageUrl = null,
     Object? occupation = null,
     Object? sex = null,
@@ -230,10 +221,6 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
               as String,
       profileImageUrl: null == profileImageUrl
           ? _value.profileImageUrl
@@ -274,7 +261,6 @@ class _$_User implements _User {
       final List<String> contactIds = const <String>[],
       final List<String> familyContactIds = const <String>[],
       this.name = '',
-      this.password = '',
       this.profileImageUrl = '',
       this.occupation = '',
       @SexConverter() this.sex = Sex.none,
@@ -322,9 +308,6 @@ class _$_User implements _User {
   final String name;
   @override
   @JsonKey()
-  final String password;
-  @override
-  @JsonKey()
   final String profileImageUrl;
   @override
   @JsonKey()
@@ -346,7 +329,7 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(uid: $uid, tokenId: $tokenId, isAdmin: $isAdmin, isDeleted: $isDeleted, contactIds: $contactIds, familyContactIds: $familyContactIds, name: $name, password: $password, profileImageUrl: $profileImageUrl, occupation: $occupation, sex: $sex, household: $household, birthday: $birthday, createdAt: $createdAt)';
+    return 'User(uid: $uid, tokenId: $tokenId, isAdmin: $isAdmin, isDeleted: $isDeleted, contactIds: $contactIds, familyContactIds: $familyContactIds, name: $name, profileImageUrl: $profileImageUrl, occupation: $occupation, sex: $sex, household: $household, birthday: $birthday, createdAt: $createdAt)';
   }
 
   @override
@@ -364,8 +347,6 @@ class _$_User implements _User {
             const DeepCollectionEquality()
                 .equals(other._familyContactIds, _familyContactIds) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
             (identical(other.profileImageUrl, profileImageUrl) ||
                 other.profileImageUrl == profileImageUrl) &&
             (identical(other.occupation, occupation) ||
@@ -390,7 +371,6 @@ class _$_User implements _User {
       const DeepCollectionEquality().hash(_contactIds),
       const DeepCollectionEquality().hash(_familyContactIds),
       name,
-      password,
       profileImageUrl,
       occupation,
       sex,
@@ -421,7 +401,6 @@ abstract class _User implements User {
           final List<String> contactIds,
           final List<String> familyContactIds,
           final String name,
-          final String password,
           final String profileImageUrl,
           final String occupation,
           @SexConverter() final Sex sex,
@@ -446,8 +425,6 @@ abstract class _User implements User {
   List<String> get familyContactIds;
   @override
   String get name;
-  @override
-  String get password;
   @override
   String get profileImageUrl;
   @override

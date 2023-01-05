@@ -20,7 +20,6 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
               .toList() ??
           const <String>[],
       name: json['name'] as String? ?? '',
-      password: json['password'] as String? ?? '',
       profileImageUrl: json['profileImageUrl'] as String? ?? '',
       occupation: json['occupation'] as String? ?? '',
       sex: json['sex'] == null
@@ -43,7 +42,6 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'contactIds': instance.contactIds,
       'familyContactIds': instance.familyContactIds,
       'name': instance.name,
-      'password': instance.password,
       'profileImageUrl': instance.profileImageUrl,
       'occupation': instance.occupation,
       'sex': const SexConverter().toJson(instance.sex),

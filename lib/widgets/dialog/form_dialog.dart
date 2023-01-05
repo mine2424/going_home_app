@@ -21,12 +21,11 @@ class FormDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
-      title: const Text("パスワードリセット"),
+      title: Text(titleText),
       content: SizedBox(
         height: 140,
         child: Column(
           children: [
-            Text(titleText),
             SizedBox(height: Consts.space4x(4)),
             TextFormField(
               controller: textController,
@@ -40,9 +39,13 @@ class FormDialog extends ConsumerWidget {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: onPressed,
-          child: const Text("決定"),
+        Builder(
+          builder: (context) {
+            return TextButton(
+              onPressed: onPressed,
+              child: const Text("決定"),
+            );
+          },
         ),
       ],
     );

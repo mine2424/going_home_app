@@ -23,9 +23,23 @@ class ContactRepository {
     }
   }
 
-  Future<void> addContactUser(User user) async {
+  Future<List<Contact>> getMyContacts(List<String> contactIds) async {
     try {
-      await _db.doc(User.docPath(user.uid)).set(user.toJson());
+      final docs = await _db
+          .collection(Contact.colPath)
+          .where('contactId', whereIn: contactIds)
+          .get();
+
+      return docs.docs.map((doc) => Contact.fromJson(doc.data())).toList();
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to get contacts.');
+    }
+  }
+
+  Future<void> addContact(Contact contact) async {
+    try {
+      await _db.doc(Contact.docPath(contact.contactId)).set(contact.toJson());
     } catch (e) {
       print(e);
       throw Exception('Failed to add contact user.');

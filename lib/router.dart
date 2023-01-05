@@ -1,16 +1,19 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:going_home_app/pages/auth/add_profile_page.dart';
 import 'package:going_home_app/pages/auth/login_page.dart';
 import 'package:going_home_app/pages/auth/sign_up_page.dart';
+import 'package:going_home_app/pages/contact/contact_history_page.dart';
+import 'package:going_home_app/pages/setting/news_page.dart';
+import 'package:going_home_app/pages/setting/setting_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:going_home_app/domain/auth/auth_service.dart';
 import 'package:going_home_app/domain/auth/enums/auth_status.dart';
 import 'package:going_home_app/pages/auth/onBoarding_page.dart';
 import 'package:going_home_app/pages/contact/contact_home_page.dart';
-import 'package:going_home_app/pages/contact/contact_page.dart';
 
 enum RoutePath {
   onBoarding,
@@ -18,9 +21,14 @@ enum RoutePath {
   login,
   signUp,
   contact_home,
-  contact;
+  contact_history,
+  setting,
+  news;
 
   String get toStr => '/$name';
+
+  String get toStrWithValue => '/$name/:value';
+  String setToStrWithValue(String val) => '/$name/$val';
 }
 
 final routerProvider = Provider(
@@ -52,9 +60,20 @@ final routerProvider = Provider(
           path: RoutePath.contact_home.toStr,
           builder: (context, state) => const ContactHomePage(),
         ),
+
         GoRoute(
-          path: RoutePath.contact.toStr,
-          builder: (context, state) => const ContactPage(),
+          path: RoutePath.contact_history.toStr,
+          builder: (context, state) => const ContactHistoryPage(),
+        ),
+
+        // --- Setting ---
+        GoRoute(
+          path: RoutePath.setting.toStr,
+          builder: (context, state) => const SettingPage(),
+        ),
+        GoRoute(
+          path: RoutePath.news.toStr,
+          builder: (context, state) => const NewsPage(),
         ),
       ],
       redirect: (_, state) {
@@ -64,7 +83,7 @@ final routerProvider = Provider(
             state.subloc == RoutePath.login.toStr ||
             state.subloc == RoutePath.signUp.toStr;
 
-        if (!isNone && !isProcessing) {
+        if (isNone && !isProcessing) {
           return RoutePath.onBoarding.toStr;
         }
 

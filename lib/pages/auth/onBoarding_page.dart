@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:going_home_app/common/color.dart';
-import 'package:going_home_app/pages/auth/add_profile_page.dart';
 import 'package:going_home_app/router.dart';
 import 'package:going_home_app/widgets/button/widely_button.dart';
 

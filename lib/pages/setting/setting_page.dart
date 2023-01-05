@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:going_home_app/router.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
 
-  static const list = [
-    'お知らせ',
-    '利用規約',
-    'プライバシーポリシー',
-    'お問い合わせ',
-    'アプリバージョン',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final list = {
+      '使い方': RoutePath.add_profile.toStr,
+      'プロフィール編集': RoutePath.add_profile.toStr,
+      'お知らせ': RoutePath.news.toStr,
+      '利用規約': RoutePath.add_profile.toStr,
+      'プライバシーポリシー': RoutePath.add_profile.toStr,
+      'お問い合わせ・ご要望': RoutePath.add_profile.toStr,
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('設定'),
@@ -21,7 +24,10 @@ class SettingPage extends StatelessWidget {
         itemCount: list.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(list[index]),
+            title: Text(list.keys.toList()[index]),
+            onTap: () {
+              context.push(list.values.toList()[index]);
+            },
           );
         },
       ),

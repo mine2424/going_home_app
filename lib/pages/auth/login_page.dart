@@ -113,7 +113,7 @@ class LoginPage extends ConsumerWidget {
                     const Text('アカウントをお持ちでない方は'),
                     TextButton(
                       onPressed: () {
-                        context.go(RoutePath.signUp.toStr);
+                        context.go(RoutePath.signUp.toStrWithValue);
                       },
                       child: const Text(
                         'こちら',

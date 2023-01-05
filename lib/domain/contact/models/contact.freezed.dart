@@ -21,12 +21,19 @@ Contact _$ContactFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Contact {
   String get contactId => throw _privateConstructorUsedError;
-  @UserConverter()
-  List<User> get users => throw _privateConstructorUsedError;
-  NotifyArea get notifyArea =>
+  String get word => throw _privateConstructorUsedError;
+  String get contactName =>
       throw _privateConstructorUsedError; // 到着したかどうか（offの場合はtrue）
   bool get isMatched => throw _privateConstructorUsedError;
-  String get word => throw _privateConstructorUsedError;
+  bool get isFavorite => throw _privateConstructorUsedError;
+  NotifyArea get notifyArea => throw _privateConstructorUsedError;
+  @UserConverter()
+  List<User> get users => throw _privateConstructorUsedError;
+  @ContactLocationConverter()
+  ContactLocation get currentGoalLocation => throw _privateConstructorUsedError;
+  @ContactLocationConverter()
+  List<ContactLocation> get goalLocationList =>
+      throw _privateConstructorUsedError;
   @NullableDatetimeTimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @NullableDatetimeTimestampConverter()
@@ -44,12 +51,18 @@ abstract class $ContactCopyWith<$Res> {
   @useResult
   $Res call(
       {String contactId,
-      @UserConverter() List<User> users,
-      NotifyArea notifyArea,
-      bool isMatched,
       String word,
+      String contactName,
+      bool isMatched,
+      bool isFavorite,
+      NotifyArea notifyArea,
+      @UserConverter() List<User> users,
+      @ContactLocationConverter() ContactLocation currentGoalLocation,
+      @ContactLocationConverter() List<ContactLocation> goalLocationList,
       @NullableDatetimeTimestampConverter() DateTime? createdAt,
       @NullableDatetimeTimestampConverter() DateTime? updatedAt});
+
+  $ContactLocationCopyWith<$Res> get currentGoalLocation;
 }
 
 /// @nodoc
@@ -66,10 +79,14 @@ class _$ContactCopyWithImpl<$Res, $Val extends Contact>
   @override
   $Res call({
     Object? contactId = null,
-    Object? users = null,
-    Object? notifyArea = null,
-    Object? isMatched = null,
     Object? word = null,
+    Object? contactName = null,
+    Object? isMatched = null,
+    Object? isFavorite = null,
+    Object? notifyArea = null,
+    Object? users = null,
+    Object? currentGoalLocation = null,
+    Object? goalLocationList = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -78,22 +95,38 @@ class _$ContactCopyWithImpl<$Res, $Val extends Contact>
           ? _value.contactId
           : contactId // ignore: cast_nullable_to_non_nullable
               as String,
-      users: null == users
-          ? _value.users
-          : users // ignore: cast_nullable_to_non_nullable
-              as List<User>,
-      notifyArea: null == notifyArea
-          ? _value.notifyArea
-          : notifyArea // ignore: cast_nullable_to_non_nullable
-              as NotifyArea,
-      isMatched: null == isMatched
-          ? _value.isMatched
-          : isMatched // ignore: cast_nullable_to_non_nullable
-              as bool,
       word: null == word
           ? _value.word
           : word // ignore: cast_nullable_to_non_nullable
               as String,
+      contactName: null == contactName
+          ? _value.contactName
+          : contactName // ignore: cast_nullable_to_non_nullable
+              as String,
+      isMatched: null == isMatched
+          ? _value.isMatched
+          : isMatched // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
+      notifyArea: null == notifyArea
+          ? _value.notifyArea
+          : notifyArea // ignore: cast_nullable_to_non_nullable
+              as NotifyArea,
+      users: null == users
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<User>,
+      currentGoalLocation: null == currentGoalLocation
+          ? _value.currentGoalLocation
+          : currentGoalLocation // ignore: cast_nullable_to_non_nullable
+              as ContactLocation,
+      goalLocationList: null == goalLocationList
+          ? _value.goalLocationList
+          : goalLocationList // ignore: cast_nullable_to_non_nullable
+              as List<ContactLocation>,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -103,6 +136,14 @@ class _$ContactCopyWithImpl<$Res, $Val extends Contact>
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ContactLocationCopyWith<$Res> get currentGoalLocation {
+    return $ContactLocationCopyWith<$Res>(_value.currentGoalLocation, (value) {
+      return _then(_value.copyWith(currentGoalLocation: value) as $Val);
+    });
   }
 }
 
@@ -115,12 +156,19 @@ abstract class _$$_ContactCopyWith<$Res> implements $ContactCopyWith<$Res> {
   @useResult
   $Res call(
       {String contactId,
-      @UserConverter() List<User> users,
-      NotifyArea notifyArea,
-      bool isMatched,
       String word,
+      String contactName,
+      bool isMatched,
+      bool isFavorite,
+      NotifyArea notifyArea,
+      @UserConverter() List<User> users,
+      @ContactLocationConverter() ContactLocation currentGoalLocation,
+      @ContactLocationConverter() List<ContactLocation> goalLocationList,
       @NullableDatetimeTimestampConverter() DateTime? createdAt,
       @NullableDatetimeTimestampConverter() DateTime? updatedAt});
+
+  @override
+  $ContactLocationCopyWith<$Res> get currentGoalLocation;
 }
 
 /// @nodoc
@@ -134,10 +182,14 @@ class __$$_ContactCopyWithImpl<$Res>
   @override
   $Res call({
     Object? contactId = null,
-    Object? users = null,
-    Object? notifyArea = null,
-    Object? isMatched = null,
     Object? word = null,
+    Object? contactName = null,
+    Object? isMatched = null,
+    Object? isFavorite = null,
+    Object? notifyArea = null,
+    Object? users = null,
+    Object? currentGoalLocation = null,
+    Object? goalLocationList = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -146,22 +198,38 @@ class __$$_ContactCopyWithImpl<$Res>
           ? _value.contactId
           : contactId // ignore: cast_nullable_to_non_nullable
               as String,
-      users: null == users
-          ? _value._users
-          : users // ignore: cast_nullable_to_non_nullable
-              as List<User>,
-      notifyArea: null == notifyArea
-          ? _value.notifyArea
-          : notifyArea // ignore: cast_nullable_to_non_nullable
-              as NotifyArea,
-      isMatched: null == isMatched
-          ? _value.isMatched
-          : isMatched // ignore: cast_nullable_to_non_nullable
-              as bool,
       word: null == word
           ? _value.word
           : word // ignore: cast_nullable_to_non_nullable
               as String,
+      contactName: null == contactName
+          ? _value.contactName
+          : contactName // ignore: cast_nullable_to_non_nullable
+              as String,
+      isMatched: null == isMatched
+          ? _value.isMatched
+          : isMatched // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
+      notifyArea: null == notifyArea
+          ? _value.notifyArea
+          : notifyArea // ignore: cast_nullable_to_non_nullable
+              as NotifyArea,
+      users: null == users
+          ? _value._users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<User>,
+      currentGoalLocation: null == currentGoalLocation
+          ? _value.currentGoalLocation
+          : currentGoalLocation // ignore: cast_nullable_to_non_nullable
+              as ContactLocation,
+      goalLocationList: null == goalLocationList
+          ? _value._goalLocationList
+          : goalLocationList // ignore: cast_nullable_to_non_nullable
+              as List<ContactLocation>,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -179,13 +247,20 @@ class __$$_ContactCopyWithImpl<$Res>
 class _$_Contact implements _Contact {
   const _$_Contact(
       {this.contactId = '',
-      @UserConverter() final List<User> users = const <User>[],
-      this.notifyArea = NotifyArea.none,
-      this.isMatched = true,
       this.word = '',
+      this.contactName = '',
+      this.isMatched = true,
+      this.isFavorite = false,
+      this.notifyArea = NotifyArea.none,
+      @UserConverter() final List<User> users = const <User>[],
+      @ContactLocationConverter() this.currentGoalLocation =
+          const ContactLocation(),
+      @ContactLocationConverter() final List<ContactLocation> goalLocationList =
+          const <ContactLocation>[],
       @NullableDatetimeTimestampConverter() this.createdAt,
       @NullableDatetimeTimestampConverter() this.updatedAt})
-      : _users = users;
+      : _users = users,
+        _goalLocationList = goalLocationList;
 
   factory _$_Contact.fromJson(Map<String, dynamic> json) =>
       _$$_ContactFromJson(json);
@@ -193,6 +268,22 @@ class _$_Contact implements _Contact {
   @override
   @JsonKey()
   final String contactId;
+  @override
+  @JsonKey()
+  final String word;
+  @override
+  @JsonKey()
+  final String contactName;
+// 到着したかどうか（offの場合はtrue）
+  @override
+  @JsonKey()
+  final bool isMatched;
+  @override
+  @JsonKey()
+  final bool isFavorite;
+  @override
+  @JsonKey()
+  final NotifyArea notifyArea;
   final List<User> _users;
   @override
   @JsonKey()
@@ -205,14 +296,19 @@ class _$_Contact implements _Contact {
 
   @override
   @JsonKey()
-  final NotifyArea notifyArea;
-// 到着したかどうか（offの場合はtrue）
+  @ContactLocationConverter()
+  final ContactLocation currentGoalLocation;
+  final List<ContactLocation> _goalLocationList;
   @override
   @JsonKey()
-  final bool isMatched;
-  @override
-  @JsonKey()
-  final String word;
+  @ContactLocationConverter()
+  List<ContactLocation> get goalLocationList {
+    if (_goalLocationList is EqualUnmodifiableListView)
+      return _goalLocationList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_goalLocationList);
+  }
+
   @override
   @NullableDatetimeTimestampConverter()
   final DateTime? createdAt;
@@ -222,7 +318,7 @@ class _$_Contact implements _Contact {
 
   @override
   String toString() {
-    return 'Contact(contactId: $contactId, users: $users, notifyArea: $notifyArea, isMatched: $isMatched, word: $word, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Contact(contactId: $contactId, word: $word, contactName: $contactName, isMatched: $isMatched, isFavorite: $isFavorite, notifyArea: $notifyArea, users: $users, currentGoalLocation: $currentGoalLocation, goalLocationList: $goalLocationList, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -232,12 +328,20 @@ class _$_Contact implements _Contact {
             other is _$_Contact &&
             (identical(other.contactId, contactId) ||
                 other.contactId == contactId) &&
-            const DeepCollectionEquality().equals(other._users, _users) &&
-            (identical(other.notifyArea, notifyArea) ||
-                other.notifyArea == notifyArea) &&
+            (identical(other.word, word) || other.word == word) &&
+            (identical(other.contactName, contactName) ||
+                other.contactName == contactName) &&
             (identical(other.isMatched, isMatched) ||
                 other.isMatched == isMatched) &&
-            (identical(other.word, word) || other.word == word) &&
+            (identical(other.isFavorite, isFavorite) ||
+                other.isFavorite == isFavorite) &&
+            (identical(other.notifyArea, notifyArea) ||
+                other.notifyArea == notifyArea) &&
+            const DeepCollectionEquality().equals(other._users, _users) &&
+            (identical(other.currentGoalLocation, currentGoalLocation) ||
+                other.currentGoalLocation == currentGoalLocation) &&
+            const DeepCollectionEquality()
+                .equals(other._goalLocationList, _goalLocationList) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -249,10 +353,14 @@ class _$_Contact implements _Contact {
   int get hashCode => Object.hash(
       runtimeType,
       contactId,
-      const DeepCollectionEquality().hash(_users),
-      notifyArea,
-      isMatched,
       word,
+      contactName,
+      isMatched,
+      isFavorite,
+      notifyArea,
+      const DeepCollectionEquality().hash(_users),
+      currentGoalLocation,
+      const DeepCollectionEquality().hash(_goalLocationList),
       createdAt,
       updatedAt);
 
@@ -272,28 +380,46 @@ class _$_Contact implements _Contact {
 
 abstract class _Contact implements Contact {
   const factory _Contact(
-          {final String contactId,
-          @UserConverter() final List<User> users,
-          final NotifyArea notifyArea,
-          final bool isMatched,
-          final String word,
-          @NullableDatetimeTimestampConverter() final DateTime? createdAt,
-          @NullableDatetimeTimestampConverter() final DateTime? updatedAt}) =
-      _$_Contact;
+      {final String contactId,
+      final String word,
+      final String contactName,
+      final bool isMatched,
+      final bool isFavorite,
+      final NotifyArea notifyArea,
+      @UserConverter()
+          final List<User> users,
+      @ContactLocationConverter()
+          final ContactLocation currentGoalLocation,
+      @ContactLocationConverter()
+          final List<ContactLocation> goalLocationList,
+      @NullableDatetimeTimestampConverter()
+          final DateTime? createdAt,
+      @NullableDatetimeTimestampConverter()
+          final DateTime? updatedAt}) = _$_Contact;
 
   factory _Contact.fromJson(Map<String, dynamic> json) = _$_Contact.fromJson;
 
   @override
   String get contactId;
   @override
-  @UserConverter()
-  List<User> get users;
+  String get word;
   @override
-  NotifyArea get notifyArea;
+  String get contactName;
   @override // 到着したかどうか（offの場合はtrue）
   bool get isMatched;
   @override
-  String get word;
+  bool get isFavorite;
+  @override
+  NotifyArea get notifyArea;
+  @override
+  @UserConverter()
+  List<User> get users;
+  @override
+  @ContactLocationConverter()
+  ContactLocation get currentGoalLocation;
+  @override
+  @ContactLocationConverter()
+  List<ContactLocation> get goalLocationList;
   @override
   @NullableDatetimeTimestampConverter()
   DateTime? get createdAt;

@@ -14,7 +14,7 @@ class SingleDialog extends StatelessWidget {
   void show(BuildContext context) async {
     await showDialog(
       context: context,
-      builder: (context) => build(context),
+      builder: (context) => this,
     );
   }
 

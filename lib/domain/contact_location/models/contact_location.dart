@@ -82,9 +82,7 @@ class ContactLocation with _$ContactLocation {
   factory ContactLocation.fromJson(Map<String, dynamic> json) =>
       _$ContactLocationFromJson(json);
 
-  static ContactLocation footprintToData(
-    LocationData locationData,
-  ) {
+  static ContactLocation toLocation(LocationData locationData) {
     return ContactLocation(
       latitude: locationData.latitude!,
       longitude: locationData.longitude!,

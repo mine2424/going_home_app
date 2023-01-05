@@ -30,10 +30,10 @@ class AddProfilePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: Consts.space4x(2)),
-            // const Text('name'),
+            const Text('name'),
             SizedBox(height: Consts.space4x(1)),
             // TODO: idはコピペ可能にする
-            // const Text('id: 1234567890'),
+            const Text('id: 1234567890'),
             SizedBox(height: Consts.space4x(6)),
             const TextField(
               decoration: InputDecoration(
@@ -42,26 +42,7 @@ class AddProfilePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: Consts.space4x(2)),
-            const TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '名前',
-              ),
-            ),
-            SizedBox(height: Consts.space4x(2)),
-            const TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '名前',
-              ),
-            ),
-            SizedBox(height: Consts.space4x(2)),
-            const TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '名前',
-              ),
-            ),
+            // TODO: 家族設定をできるようにする
             SizedBox(height: Consts.space4x(2)),
           ],
         ),
