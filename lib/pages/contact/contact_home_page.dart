@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:go_router/go_router.dart';
 import 'package:going_home_app/common/color.dart';
 import 'package:going_home_app/common/consts.dart';
@@ -36,7 +38,7 @@ class ContactHomePage extends ConsumerWidget {
             title: const Text('Going Home'),
             leading: IconButton(
               icon: const Icon(Icons.add, size: 32),
-              onPressed: () => showAddContactDialog(context),
+              onPressed: () => showAddContactDialog(context, contactNotifier),
             ),
             actions: [
               IconButton(
@@ -170,35 +172,76 @@ class ContactHomePage extends ConsumerWidget {
     );
   }
 
-  void showAddContactDialog(BuildContext context) {
+  void showAddContactDialog(BuildContext context, ContactNotifier noti) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      builder: (context) => SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: Column(
+      builder: (context) => Scaffold(
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: WidelyButton(
-                label: "自分のIDをコピーする",
-                height: 54,
-                textStyle: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: kWhite),
-                onPressed: () {
-                  // TODO: 自分のIDをコピーする
-                },
-              ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: WidelyButton(
+                    label: '自分のIDをコピーする',
+                    height: 54,
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(color: kWhite),
+                    onPressed: () async {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'IDをコピーしました',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: kWhite, fontSize: 16),
+                          ),
+                        ),
+                      );
+                      await Clipboard.setData(ClipboardData(text: noti.myUid));
+                      await FlutterShare.share(
+                        title: '自分のIDを共有する',
+                        text: noti.myUid,
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: WidelyButton(
+                    label: '自分のIDをコピーする',
+                    height: 54,
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(color: kWhite),
+                    onPressed: () async {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'IDをコピーしました',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: kWhite, fontSize: 16),
+                          ),
+                        ),
+                      );
+                      await Clipboard.setData(ClipboardData(text: noti.myUid));
+                      await FlutterShare.share(
+                        title: '自分のIDを共有する',
+                        text: noti.myUid,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -215,16 +258,16 @@ class ContactHomePage extends ConsumerWidget {
             const SizedBox(height: 8),
             Expanded(
               child: ListView.builder(
-                itemCount: 10,
+                itemCount: 100,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    leading: CircleAvatar(
+                    leading: const CircleAvatar(
                       radius: 24,
                       backgroundImage:
                           NetworkImage('https://picsum.photos/200/300'),
                     ),
-                    title: Text('名前'),
-                    subtitle: Text('ID'),
+                    title: const Text('名前'),
+                    subtitle: const Text('ID'),
                     trailing: IconButton(
                       icon: const Icon(Icons.add),
                       onPressed: () {

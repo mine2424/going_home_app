@@ -23,9 +23,8 @@ class AddProfilePage extends StatelessWidget {
                 padding: EdgeInsets.all(Consts.space4x(1.5)),
                 child: const CircleAvatar(
                   radius: 70,
-                  backgroundImage: NetworkImage(
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Bill_Gates_Buys_Skype_%285707954468%29.jpg/2560px-Bill_Gates_Buys_Skype_%285707954468%29.jpg',
-                  ),
+                  backgroundImage:
+                      NetworkImage('https://picsum.photos/200/300'),
                 ),
               ),
             ),

@@ -26,6 +26,8 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
   final ContactRepository _contactRepository;
   final AuthNotifier _authNotifier;
 
+  String get myUid => _authNotifier.uid;
+
   Future<void> init() async {
     // this is production code //
     // await getMyContactList();

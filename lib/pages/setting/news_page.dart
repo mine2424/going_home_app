@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:going_home_app/common/color.dart';
 
 class NewsPage extends StatelessWidget {
@@ -28,7 +26,7 @@ class NewsPage extends StatelessWidget {
 
   Widget newsListTile() {
     return Column(
-      children: [
+      children: const [
         ListTile(
           title: Text('お知らせ'),
           subtitle: Text('2020/01/01 00:00'),

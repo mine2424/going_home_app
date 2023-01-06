@@ -51,6 +51,7 @@ dependencies:
   analyzer: ^5.2.0
   location: ^4.4.0
   go_router: ^6.0.0
+  flutter_share: ^2.0.0
 
 dev_dependencies:
   flutter_test:

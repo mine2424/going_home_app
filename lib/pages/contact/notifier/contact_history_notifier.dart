@@ -1,14 +1,8 @@
-import 'package:going_home_app/common/packages/ulid.dart';
 import 'package:going_home_app/domain/contact/contact_repository.dart';
-import 'package:going_home_app/domain/contact/enums/notify_area.dart';
-import 'package:going_home_app/domain/contact/models/contact.dart';
 import 'package:going_home_app/domain/contact_location/contact_location_service.dart';
 import 'package:going_home_app/domain/contact_location/models/contact_location.dart';
-import 'package:going_home_app/domain/contact_location/models/contact_location_history.dart';
-import 'package:going_home_app/domain/user/models/user.dart';
 import 'package:going_home_app/pages/auth/notifier/auth_notifier.dart';
 import 'package:going_home_app/pages/contact/state/contact_history_state.dart';
-import 'package:going_home_app/pages/contact/state/contact_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final contactNotifierProvider = StateNotifierProvider<ContactHistoryNotifier,

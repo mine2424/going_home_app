@@ -1,6 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:going_home_app/pages/auth/add_profile_page.dart';
 import 'package:going_home_app/pages/auth/login_page.dart';
