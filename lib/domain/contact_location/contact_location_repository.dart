@@ -3,7 +3,7 @@ import 'package:going_home_app/domain/contact_location/models/contact_location.d
 import 'package:going_home_app/domain/contact_location/models/contact_location_history.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final contactRepositoryProvider =
+final contactLocationRepositoryProvider =
     Provider<ContactLocationRepository>((ref) => ContactLocationRepository());
 
 class ContactLocationRepository {

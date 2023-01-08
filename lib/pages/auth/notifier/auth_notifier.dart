@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:going_home_app/domain/auth/auth_service.dart';
+import 'package:going_home_app/domain/contact/models/contact.dart';
 import 'package:going_home_app/domain/user/models/user.dart';
 import 'package:going_home_app/domain/user/user_repository.dart';
 import 'package:going_home_app/pages/auth/state/auth_state.dart';
@@ -51,7 +52,48 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
     }
   }
 
-  Future<User> getUser() async {
+  Future<void> addContactId(Contact newContact) async {
+    state = const AsyncValue.loading();
+
+    try {
+      final users = newContact.users;
+
+      for (final user in users) {
+        await saveUser(user);
+      }
+    } on Exception catch (e, v) {
+      state = AsyncValue.error(e, v);
+    }
+  }
+
+  Future<void> saveUser(User user) async {
+    state = const AsyncValue.loading();
+
+    try {
+      await _authRepository.saveUser(user);
+    } on Exception catch (e, v) {
+      state = AsyncValue.error(e, v);
+    }
+  }
+
+  Future<User> getUserForContact() async {
+    return state.asData?.value.user ?? await getMyUser();
+  }
+
+  Future<User> getUser(String uid) async {
+    state = const AsyncValue.loading();
+    try {
+      final user = await _authRepository.getUser(uid);
+      state = AsyncValue.data(AuthState(user: user));
+
+      return user;
+    } on Exception catch (e, v) {
+      state = AsyncValue.error(e, v);
+      rethrow;
+    }
+  }
+
+  Future<User> getMyUser() async {
     state = const AsyncValue.loading();
     try {
       final user = await _authRepository.getUser(_authService.currentUid);

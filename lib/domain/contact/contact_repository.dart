@@ -9,14 +9,33 @@ final contactRepositoryProvider =
 class ContactRepository {
   static final _db = FirebaseFirestore.instance;
 
-  Future<User> searchContactUser(String uid) async {
+  Future<User> searchContactUserByUid(String uid) async {
     try {
-      final doc = await _db.collection(User.colPath).doc(uid).get();
+      final doc = await _db.doc(User.docPath(uid)).get();
+      print(doc);
       if (!doc.exists) {
         return const User();
       }
 
       return User.fromJson(doc.data()!);
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to search contact user.');
+    }
+  }
+
+  Future<List<User>> searchContactUserByName(String name) async {
+    try {
+      final docs = await _db
+          .collection(User.colPath)
+          .where('name', isEqualTo: name)
+          .get();
+
+      if (docs.docs.isEmpty) {
+        return [];
+      }
+
+      return docs.docs.map((doc) => User.fromJson(doc.data())).toList();
     } catch (e) {
       print(e);
       throw Exception('Failed to search contact user.');

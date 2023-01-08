@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:going_home_app/pages/auth/add_profile_page.dart';
 import 'package:going_home_app/pages/auth/login_page.dart';
 import 'package:going_home_app/pages/auth/sign_up_page.dart';
+import 'package:going_home_app/pages/contact/add_goal_location.dart';
 import 'package:going_home_app/pages/contact/contact_history_page.dart';
 import 'package:going_home_app/pages/setting/news_page.dart';
 import 'package:going_home_app/pages/setting/setting_page.dart';
@@ -21,6 +23,7 @@ enum RoutePath {
   signUp,
   contact_home,
   contact_history,
+  add_goal_location,
   setting,
   news;
 
@@ -59,10 +62,16 @@ final routerProvider = Provider(
           path: RoutePath.contact_home.toStr,
           builder: (context, state) => const ContactHomePage(),
         ),
-
         GoRoute(
           path: RoutePath.contact_history.toStr,
           builder: (context, state) => const ContactHistoryPage(),
+        ),
+        GoRoute(
+          path: RoutePath.add_goal_location.toStr,
+          pageBuilder: (context, state) => const MaterialPage(
+            fullscreenDialog: true,
+            child: AddGoalLocationPage(),
+          ),
         ),
 
         // --- Setting ---

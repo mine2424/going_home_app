@@ -6,7 +6,9 @@ import 'package:going_home_app/common/color.dart';
 import 'package:going_home_app/common/consts.dart';
 import 'package:going_home_app/domain/contact/models/contact.dart';
 import 'package:going_home_app/pages/contact/add_contact_modal.dart';
+import 'package:going_home_app/pages/contact/notifier/contact_history_notifier.dart';
 import 'package:going_home_app/pages/contact/notifier/contact_notifier.dart';
+import 'package:going_home_app/pages/contact/state/contact_state.dart';
 import 'package:going_home_app/router.dart';
 import 'package:going_home_app/widgets/button/widely_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,6 +20,9 @@ class ContactHomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final contactState = ref.watch(contactNotifierProvider);
     final contactNotifier = ref.watch(contactNotifierProvider.notifier);
+    final contactHistoryNoti =
+        ref.watch(contactHistoryNotifierProvider.notifier);
+
     return contactState.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Center(
@@ -38,7 +43,11 @@ class ContactHomePage extends ConsumerWidget {
             title: const Text('Going Home'),
             leading: IconButton(
               icon: const Icon(Icons.add, size: 32),
-              onPressed: () => showAddContactDialog(context, contactNotifier),
+              onPressed: () => showAddContactDialog(
+                context,
+                contactNotifier,
+                contacts,
+              ),
             ),
             actions: [
               IconButton(
@@ -172,7 +181,11 @@ class ContactHomePage extends ConsumerWidget {
     );
   }
 
-  void showAddContactDialog(BuildContext context, ContactNotifier noti) {
+  void showAddContactDialog(
+    BuildContext context,
+    ContactNotifier noti,
+    ContactState state,
+  ) {
     showModalBottomSheet(
       context: context,
       builder: (context) => Scaffold(
@@ -181,67 +194,34 @@ class ContactHomePage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: WidelyButton(
-                    label: '自分のIDをコピーする',
-                    height: 54,
-                    textStyle: Theme.of(context)
-                        .textTheme
-                        .headline5!
-                        .copyWith(color: kWhite),
-                    onPressed: () async {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'IDをコピーしました',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(color: kWhite, fontSize: 16),
-                          ),
-                        ),
-                      );
-                      await Clipboard.setData(ClipboardData(text: noti.myUid));
-                      await FlutterShare.share(
-                        title: '自分のIDを共有する',
-                        text: noti.myUid,
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: WidelyButton(
-                    label: '自分のIDをコピーする',
-                    height: 54,
-                    textStyle: Theme.of(context)
-                        .textTheme
-                        .headline5!
-                        .copyWith(color: kWhite),
-                    onPressed: () async {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'IDをコピーしました',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(color: kWhite, fontSize: 16),
-                          ),
-                        ),
-                      );
-                      await Clipboard.setData(ClipboardData(text: noti.myUid));
-                      await FlutterShare.share(
-                        title: '自分のIDを共有する',
-                        text: noti.myUid,
-                      );
-                    },
-                  ),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16).copyWith(top: 32),
+              child: WidelyButton(
+                label: '自分のIDをコピーする',
+                height: 54,
+                textStyle: Theme.of(context)
+                    .textTheme
+                    .headline5!
+                    .copyWith(color: kWhite),
+                onPressed: () async {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'IDをコピーしました',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: kWhite, fontSize: 16),
+                      ),
+                    ),
+                  );
+                  await Clipboard.setData(ClipboardData(text: noti.myUid));
+                  await FlutterShare.share(
+                    title: '自分のIDを共有する',
+                    text: noti.myUid,
+                  );
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -249,10 +229,10 @@ class ContactHomePage extends ConsumerWidget {
                 vertical: 8,
               ),
               child: TextField(
-                controller: TextEditingController(),
                 decoration: const InputDecoration(
-                  hintText: 'IDを検索',
+                  hintText: 'IDまたは名前を検索',
                 ),
+                onSubmitted: (value) => noti.searchContactUser(value),
               ),
             ),
             const SizedBox(height: 8),
@@ -271,6 +251,7 @@ class ContactHomePage extends ConsumerWidget {
                     trailing: IconButton(
                       icon: const Icon(Icons.add),
                       onPressed: () {
+                        noti.addContactUser(state.searchedUsers[index]);
                         const AddContactModal().show(context);
                       },
                     ),

@@ -5,9 +5,12 @@ import 'package:going_home_app/common/consts.dart';
 import 'package:going_home_app/common/packages/cool_dropdown/cool_dropdown.dart';
 import 'package:going_home_app/common/packages/cool_dropdown/cool_dropdown_item.dart';
 import 'package:going_home_app/domain/contact/enums/notify_area.dart';
+import 'package:going_home_app/pages/contact/notifier/contact_notifier.dart';
+import 'package:going_home_app/router.dart';
 import 'package:going_home_app/widgets/button/widely_button.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AddContactModal extends StatelessWidget {
+class AddContactModal extends ConsumerWidget {
   const AddContactModal({super.key});
 
   void show(BuildContext context) {
@@ -17,18 +20,18 @@ class AddContactModal extends StatelessWidget {
       isDismissible: true,
       useRootNavigator: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) => this,
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final noti = ref.watch(contactNotifierProvider.notifier);
+    final stat = ref.watch(contactNotifierProvider).asData!.value;
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.9,
+      height: MediaQuery.of(context).size.height * 0.8,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -49,8 +52,8 @@ class AddContactModal extends StatelessWidget {
                     'お気に入り登録',
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  value: false,
-                  onChanged: (bool value) {/* ... */},
+                  value: stat.isFavorite,
+                  onChanged: (bool value) => noti.changeIsFavorite(value),
                   secondary: const Icon(Icons.star),
                 ),
                 Padding(
@@ -60,12 +63,12 @@ class AddContactModal extends StatelessWidget {
                   child: const Divider(color: kDarkGray),
                 ),
                 Text(
-                  '通知の文言を決める',
+                  '通知の文言を決めましょう',
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                SizedBox(height: Consts.space4x(6)),
+                SizedBox(height: Consts.space4x(3)),
                 TextField(
-                  controller: TextEditingController(),
+                  controller: noti.wordController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '文言を入力してください',
@@ -75,6 +78,11 @@ class AddContactModal extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 24),
                   child: Divider(color: kDarkGray),
                 ),
+                Text(
+                  'どのくらいの距離で通知しますか？',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                SizedBox(height: Consts.space4x(3)),
                 CoolDropdown(
                   resultWidth: double.infinity,
                   dropdownWidth: 300,
@@ -100,7 +108,8 @@ class AddContactModal extends StatelessWidget {
                       value: NotifyArea.veryFar.name,
                     ),
                   ],
-                  onChange: (value) => print(value),
+                  onChange: (CoolDropdownItem value) =>
+                      noti.changeNotifyArea(value),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24).copyWith(
@@ -117,8 +126,7 @@ class AddContactModal extends StatelessWidget {
                         .subtitle1!
                         .copyWith(color: kWhite),
                     onPressed: () {
-                      // TODO: ここで到着場所を登録する
-                      // TODO: google mapで場所を選択する
+                      context.push(RoutePath.add_goal_location.toStr);
                     },
                   ),
                 ),
@@ -130,7 +138,7 @@ class AddContactModal extends StatelessWidget {
                       .bodyText2!
                       .copyWith(color: kDarkGray, fontSize: 14),
                 ),
-                SizedBox(height: Consts.space4x(35)),
+                SizedBox(height: Consts.space4x(15)),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: WidelyButton(
@@ -139,10 +147,21 @@ class AddContactModal extends StatelessWidget {
                         .textTheme
                         .headline5!
                         .copyWith(color: kWhite),
-                    onPressed: () {
-                      // home画面まで戻る
-                      context.pop();
-                      context.pop();
+                    onPressed: () async {
+                      await noti.addContact().then((value) {
+                        if (!value) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('連絡先を選択してください'),
+                            ),
+                          );
+                          return;
+                        }
+
+                        // home画面まで戻る
+                        context.pop();
+                        context.pop();
+                      });
                     },
                     backgroundColor: kRed,
                     height: 60,

@@ -11,14 +11,31 @@ enum NotifyArea {
   // 100m以内
   near,
 
-  // 1km以内
+  // 500m以内
   normal,
 
-  // 10km以内
+  // 1km以内
   far,
 
-  // 100km以内
+  // 10km以内
   veryFar;
+
+  int toMeter() {
+    switch (this) {
+      case NotifyArea.veryNear:
+        return 10;
+      case NotifyArea.near:
+        return 100;
+      case NotifyArea.normal:
+        return 500;
+      case NotifyArea.far:
+        return 1000;
+      case NotifyArea.veryFar:
+        return 10000;
+      default:
+        return 0;
+    }
+  }
 }
 
 class NotifyAreaConverter implements JsonConverter<NotifyArea, String> {

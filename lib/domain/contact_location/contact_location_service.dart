@@ -27,8 +27,10 @@ class ContactLocationService {
       if (permissionGranted == PermissionStatus.denied) {
         permissionGranted = await _location.requestPermission();
         if (permissionGranted != PermissionStatus.granted) {
+          settingLocation();
           return;
         }
+        settingLocation();
         _location.enableBackgroundMode(enable: true);
       }
     });
