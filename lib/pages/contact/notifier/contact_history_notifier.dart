@@ -55,15 +55,14 @@ class ContactHistoryNotifier
   }
 
   Future<void> startRecording(Contact contact) async {
-    // TODO: 相手への通知
     // locationのオン(最初の画面でpermissionを設定すること)
     _contactLocationService.allowGeolocation();
 
     try {
       // isMatchedをfalseにする
-      final fcmToken = (await _authNotifier.getMyUserForContact()).tokenId;
+      final sentUser = (await _authNotifier.getMyUserForContact());
       await _contactRepository.updateContact(
-        contact.copyWith(isMatched: false, sentFcmToken: fcmToken),
+        contact.copyWith(isMatched: false, sentUser: sentUser),
       );
       // locationの取得, 相手の位置情報もこれで取得して、同時にDBへ保存???
       // 事前にgoalとなる位置情報を設定する必要がある(list化して目的地を選択できるようにする)
