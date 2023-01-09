@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:going_home_app/domain/auth/auth_service.dart';
 import 'package:going_home_app/domain/contact/models/contact.dart';
@@ -15,11 +16,15 @@ final authNotifierProvider =
 );
 
 class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
-  AuthNotifier(this._authRepository, this._authService)
-      : super(const AsyncValue.loading());
+  AuthNotifier(
+    this._authRepository,
+    this._authService,
+  ) : super(const AsyncValue.loading());
 
   final AuthService _authService;
   final UserRepository _authRepository;
+
+  final _message = FirebaseMessaging.instance;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -35,18 +40,29 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
     );
   }
 
+  Future<void> requestNotiPermission() async {
+    await _message.requestPermission();
+  }
+
+  Future<void> setNotification() async {
+    final token = await _message.getToken();
+    state = AsyncValue.data(state.asData!.value.copyWith(tokenId: token!));
+    print('🐯 FCM TOKEN: $token');
+  }
+
   Future<void> addUser() async {
     state = const AsyncValue.loading();
 
-    final user = User(
-      uid: _authService.currentUid,
-      name: nameController.text,
-      createdAt: DateTime.now(),
-    );
-
     try {
+      await requestNotiPermission();
+      await setNotification();
+      final user = User(
+        uid: _authService.currentUid,
+        name: nameController.text,
+        tokenId: state.asData!.value.tokenId,
+        createdAt: DateTime.now(),
+      );
       await _authRepository.saveUser(user);
-      state = const AsyncValue.data(AuthState());
     } on Exception catch (e, v) {
       state = AsyncValue.error(e, v);
     }
@@ -76,7 +92,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
     }
   }
 
-  Future<User> getUserForContact() async {
+  Future<User> getMyUserForContact() async {
     return state.asData?.value.user ?? await getMyUser();
   }
 

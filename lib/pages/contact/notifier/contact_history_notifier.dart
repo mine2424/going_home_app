@@ -61,8 +61,10 @@ class ContactHistoryNotifier
 
     try {
       // isMatchedをfalseにする
-      await _contactRepository
-          .updateContact(contact.copyWith(isMatched: false));
+      final fcmToken = (await _authNotifier.getMyUserForContact()).tokenId;
+      await _contactRepository.updateContact(
+        contact.copyWith(isMatched: false, sentFcmToken: fcmToken),
+      );
       // locationの取得, 相手の位置情報もこれで取得して、同時にDBへ保存???
       // 事前にgoalとなる位置情報を設定する必要がある(list化して目的地を選択できるようにする)
       _locationSubscription =
@@ -91,12 +93,14 @@ class ContactHistoryNotifier
           // isMatchをtrueにする
           await _contactRepository
               .updateContact(contact.copyWith(isMatched: false));
-          // contactLocationHistoryをDBに保存
-          await _contactLocationRepository.saveContactLocationHistory(
-            contact.contactId,
-            state.asData!.value.locations,
-          );
-          // まもなく到着しますという通知を送るう
+          if (gapMeter < 50) {
+            // contactLocationHistoryをDBに保存
+            // これは、5m以内（ほぼ到着）で保存した方がいいのか？
+            await _contactLocationRepository.saveContactLocationHistory(
+              contact.contactId,
+              state.asData!.value.locations,
+            );
+          }
           // done
 
           // TODO: そもそも、完全についた時は通知しなくていいから、ここで全ての処理を終了させていいのでは？

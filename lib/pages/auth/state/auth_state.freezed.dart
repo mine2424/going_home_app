@@ -23,6 +23,7 @@ mixin _$AuthState {
   User get user => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isFirstSignUp => throw _privateConstructorUsedError;
+  String get tokenId => throw _privateConstructorUsedError;
   @NullableDatetimeTimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
 
@@ -41,6 +42,7 @@ abstract class $AuthStateCopyWith<$Res> {
       {User user,
       bool isLoading,
       bool isFirstSignUp,
+      String tokenId,
       @NullableDatetimeTimestampConverter() DateTime? createdAt});
 
   $UserCopyWith<$Res> get user;
@@ -62,6 +64,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     Object? user = null,
     Object? isLoading = null,
     Object? isFirstSignUp = null,
+    Object? tokenId = null,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -77,6 +80,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.isFirstSignUp
           : isFirstSignUp // ignore: cast_nullable_to_non_nullable
               as bool,
+      tokenId: null == tokenId
+          ? _value.tokenId
+          : tokenId // ignore: cast_nullable_to_non_nullable
+              as String,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -104,6 +111,7 @@ abstract class _$$_AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       {User user,
       bool isLoading,
       bool isFirstSignUp,
+      String tokenId,
       @NullableDatetimeTimestampConverter() DateTime? createdAt});
 
   @override
@@ -124,6 +132,7 @@ class __$$_AuthStateCopyWithImpl<$Res>
     Object? user = null,
     Object? isLoading = null,
     Object? isFirstSignUp = null,
+    Object? tokenId = null,
     Object? createdAt = freezed,
   }) {
     return _then(_$_AuthState(
@@ -139,6 +148,10 @@ class __$$_AuthStateCopyWithImpl<$Res>
           ? _value.isFirstSignUp
           : isFirstSignUp // ignore: cast_nullable_to_non_nullable
               as bool,
+      tokenId: null == tokenId
+          ? _value.tokenId
+          : tokenId // ignore: cast_nullable_to_non_nullable
+              as String,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -154,6 +167,7 @@ class _$_AuthState implements _AuthState {
       {this.user = const User(),
       this.isLoading = false,
       this.isFirstSignUp = false,
+      this.tokenId = '',
       @NullableDatetimeTimestampConverter() this.createdAt});
 
   factory _$_AuthState.fromJson(Map<String, dynamic> json) =>
@@ -169,12 +183,15 @@ class _$_AuthState implements _AuthState {
   @JsonKey()
   final bool isFirstSignUp;
   @override
+  @JsonKey()
+  final String tokenId;
+  @override
   @NullableDatetimeTimestampConverter()
   final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'AuthState(user: $user, isLoading: $isLoading, isFirstSignUp: $isFirstSignUp, createdAt: $createdAt)';
+    return 'AuthState(user: $user, isLoading: $isLoading, isFirstSignUp: $isFirstSignUp, tokenId: $tokenId, createdAt: $createdAt)';
   }
 
   @override
@@ -187,14 +204,15 @@ class _$_AuthState implements _AuthState {
                 other.isLoading == isLoading) &&
             (identical(other.isFirstSignUp, isFirstSignUp) ||
                 other.isFirstSignUp == isFirstSignUp) &&
+            (identical(other.tokenId, tokenId) || other.tokenId == tokenId) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, user, isLoading, isFirstSignUp, createdAt);
+  int get hashCode => Object.hash(
+      runtimeType, user, isLoading, isFirstSignUp, tokenId, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -215,6 +233,7 @@ abstract class _AuthState implements AuthState {
           {final User user,
           final bool isLoading,
           final bool isFirstSignUp,
+          final String tokenId,
           @NullableDatetimeTimestampConverter() final DateTime? createdAt}) =
       _$_AuthState;
 
@@ -227,6 +246,8 @@ abstract class _AuthState implements AuthState {
   bool get isLoading;
   @override
   bool get isFirstSignUp;
+  @override
+  String get tokenId;
   @override
   @NullableDatetimeTimestampConverter()
   DateTime? get createdAt;

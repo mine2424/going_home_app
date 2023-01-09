@@ -42,7 +42,6 @@ class ContactLocationService {
 
   void settingLocation() {
     _location.changeSettings(
-      accuracy: LocationAccuracy.powerSave,
       interval: 2000,
       distanceFilter: 5,
     );

@@ -11,6 +11,7 @@ class AuthState with _$AuthState {
     @Default(User()) User user,
     @Default(false) bool isLoading,
     @Default(false) bool isFirstSignUp,
+    @Default('') String tokenId,
     @NullableDatetimeTimestampConverter() DateTime? createdAt,
   }) = _AuthState;
 

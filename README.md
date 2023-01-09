@@ -1,16 +1,13 @@
 # going_home_app
 
-A new Flutter project.
+「今から帰ります」を簡単に通知するアプリ
 
-## Getting Started
+## 導入
 
-This project is a starting point for a Flutter application.
+- Google Maps API Key の追加の仕方
 
-A few resources to get you started if this is your first Flutter project:
+`.env`ファイルを作成し、以下のように記述する。
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+GOOGLE_MAPS_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```

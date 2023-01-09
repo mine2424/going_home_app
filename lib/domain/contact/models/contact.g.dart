@@ -11,6 +11,10 @@ _$_Contact _$$_ContactFromJson(Map<String, dynamic> json) => _$_Contact(
       word: json['word'] as String? ?? '',
       contactName: json['contactName'] as String? ?? '',
       isMatched: json['isMatched'] as bool? ?? true,
+      sentUser: json['sentUser'] == null
+          ? const User()
+          : const UserConverter()
+              .fromJson(json['sentUser'] as Map<String, dynamic>),
       isFavorite: json['isFavorite'] as bool? ?? false,
       notifyArea:
           $enumDecodeNullable(_$NotifyAreaEnumMap, json['notifyArea']) ??
@@ -41,6 +45,7 @@ Map<String, dynamic> _$$_ContactToJson(_$_Contact instance) =>
       'word': instance.word,
       'contactName': instance.contactName,
       'isMatched': instance.isMatched,
+      'sentUser': const UserConverter().toJson(instance.sentUser),
       'isFavorite': instance.isFavorite,
       'notifyArea': _$NotifyAreaEnumMap[instance.notifyArea]!,
       'users': instance.users.map(const UserConverter().toJson).toList(),

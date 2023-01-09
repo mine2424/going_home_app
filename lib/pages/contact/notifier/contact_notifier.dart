@@ -161,7 +161,7 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
             .map((e) => e.copyWith(contactIds: [...e.contactIds, contactId]))
             .toList(),
       ));
-      final myselfUser = await _authNotifier.getUserForContact();
+      final myselfUser = await _authNotifier.getMyUserForContact();
       final newMyselfUser = myselfUser.copyWith(
         contactIds: [...myselfUser.contactIds, contactId],
       );

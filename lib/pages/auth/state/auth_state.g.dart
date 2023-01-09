@@ -12,6 +12,7 @@ _$_AuthState _$$_AuthStateFromJson(Map<String, dynamic> json) => _$_AuthState(
           : User.fromJson(json['user'] as Map<String, dynamic>),
       isLoading: json['isLoading'] as bool? ?? false,
       isFirstSignUp: json['isFirstSignUp'] as bool? ?? false,
+      tokenId: json['tokenId'] as String? ?? '',
       createdAt: const NullableDatetimeTimestampConverter()
           .fromJson(json['createdAt'] as Timestamp?),
     );
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$_AuthStateToJson(_$_AuthState instance) =>
       'user': instance.user,
       'isLoading': instance.isLoading,
       'isFirstSignUp': instance.isFirstSignUp,
+      'tokenId': instance.tokenId,
       'createdAt':
           const NullableDatetimeTimestampConverter().toJson(instance.createdAt),
     };

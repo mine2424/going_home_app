@@ -17,6 +17,7 @@ class Contact with _$Contact {
     @Default('') String contactName,
     // 到着したかどうか（offの場合はtrue）
     @Default(true) bool isMatched,
+    @UserConverter() @Default(User()) User sentUser,
     @Default(false) bool isFavorite,
     @Default(NotifyArea.none) NotifyArea notifyArea,
     @UserConverter() @Default(<User>[]) List<User> users,

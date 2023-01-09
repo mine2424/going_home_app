@@ -25,6 +25,8 @@ mixin _$Contact {
   String get contactName =>
       throw _privateConstructorUsedError; // 到着したかどうか（offの場合はtrue）
   bool get isMatched => throw _privateConstructorUsedError;
+  @UserConverter()
+  User get sentUser => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   NotifyArea get notifyArea => throw _privateConstructorUsedError;
   @UserConverter()
@@ -54,6 +56,7 @@ abstract class $ContactCopyWith<$Res> {
       String word,
       String contactName,
       bool isMatched,
+      @UserConverter() User sentUser,
       bool isFavorite,
       NotifyArea notifyArea,
       @UserConverter() List<User> users,
@@ -62,6 +65,7 @@ abstract class $ContactCopyWith<$Res> {
       @NullableDatetimeTimestampConverter() DateTime? createdAt,
       @NullableDatetimeTimestampConverter() DateTime? updatedAt});
 
+  $UserCopyWith<$Res> get sentUser;
   $ContactLocationCopyWith<$Res> get currentGoalLocation;
 }
 
@@ -82,6 +86,7 @@ class _$ContactCopyWithImpl<$Res, $Val extends Contact>
     Object? word = null,
     Object? contactName = null,
     Object? isMatched = null,
+    Object? sentUser = null,
     Object? isFavorite = null,
     Object? notifyArea = null,
     Object? users = null,
@@ -107,6 +112,10 @@ class _$ContactCopyWithImpl<$Res, $Val extends Contact>
           ? _value.isMatched
           : isMatched // ignore: cast_nullable_to_non_nullable
               as bool,
+      sentUser: null == sentUser
+          ? _value.sentUser
+          : sentUser // ignore: cast_nullable_to_non_nullable
+              as User,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -140,6 +149,14 @@ class _$ContactCopyWithImpl<$Res, $Val extends Contact>
 
   @override
   @pragma('vm:prefer-inline')
+  $UserCopyWith<$Res> get sentUser {
+    return $UserCopyWith<$Res>(_value.sentUser, (value) {
+      return _then(_value.copyWith(sentUser: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $ContactLocationCopyWith<$Res> get currentGoalLocation {
     return $ContactLocationCopyWith<$Res>(_value.currentGoalLocation, (value) {
       return _then(_value.copyWith(currentGoalLocation: value) as $Val);
@@ -159,6 +176,7 @@ abstract class _$$_ContactCopyWith<$Res> implements $ContactCopyWith<$Res> {
       String word,
       String contactName,
       bool isMatched,
+      @UserConverter() User sentUser,
       bool isFavorite,
       NotifyArea notifyArea,
       @UserConverter() List<User> users,
@@ -167,6 +185,8 @@ abstract class _$$_ContactCopyWith<$Res> implements $ContactCopyWith<$Res> {
       @NullableDatetimeTimestampConverter() DateTime? createdAt,
       @NullableDatetimeTimestampConverter() DateTime? updatedAt});
 
+  @override
+  $UserCopyWith<$Res> get sentUser;
   @override
   $ContactLocationCopyWith<$Res> get currentGoalLocation;
 }
@@ -185,6 +205,7 @@ class __$$_ContactCopyWithImpl<$Res>
     Object? word = null,
     Object? contactName = null,
     Object? isMatched = null,
+    Object? sentUser = null,
     Object? isFavorite = null,
     Object? notifyArea = null,
     Object? users = null,
@@ -210,6 +231,10 @@ class __$$_ContactCopyWithImpl<$Res>
           ? _value.isMatched
           : isMatched // ignore: cast_nullable_to_non_nullable
               as bool,
+      sentUser: null == sentUser
+          ? _value.sentUser
+          : sentUser // ignore: cast_nullable_to_non_nullable
+              as User,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -250,6 +275,7 @@ class _$_Contact implements _Contact {
       this.word = '',
       this.contactName = '',
       this.isMatched = true,
+      @UserConverter() this.sentUser = const User(),
       this.isFavorite = false,
       this.notifyArea = NotifyArea.none,
       @UserConverter() final List<User> users = const <User>[],
@@ -278,6 +304,10 @@ class _$_Contact implements _Contact {
   @override
   @JsonKey()
   final bool isMatched;
+  @override
+  @JsonKey()
+  @UserConverter()
+  final User sentUser;
   @override
   @JsonKey()
   final bool isFavorite;
@@ -318,7 +348,7 @@ class _$_Contact implements _Contact {
 
   @override
   String toString() {
-    return 'Contact(contactId: $contactId, word: $word, contactName: $contactName, isMatched: $isMatched, isFavorite: $isFavorite, notifyArea: $notifyArea, users: $users, currentGoalLocation: $currentGoalLocation, goalLocationList: $goalLocationList, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Contact(contactId: $contactId, word: $word, contactName: $contactName, isMatched: $isMatched, sentUser: $sentUser, isFavorite: $isFavorite, notifyArea: $notifyArea, users: $users, currentGoalLocation: $currentGoalLocation, goalLocationList: $goalLocationList, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -333,6 +363,8 @@ class _$_Contact implements _Contact {
                 other.contactName == contactName) &&
             (identical(other.isMatched, isMatched) ||
                 other.isMatched == isMatched) &&
+            (identical(other.sentUser, sentUser) ||
+                other.sentUser == sentUser) &&
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite) &&
             (identical(other.notifyArea, notifyArea) ||
@@ -356,6 +388,7 @@ class _$_Contact implements _Contact {
       word,
       contactName,
       isMatched,
+      sentUser,
       isFavorite,
       notifyArea,
       const DeepCollectionEquality().hash(_users),
@@ -384,6 +417,8 @@ abstract class _Contact implements Contact {
       final String word,
       final String contactName,
       final bool isMatched,
+      @UserConverter()
+          final User sentUser,
       final bool isFavorite,
       final NotifyArea notifyArea,
       @UserConverter()
@@ -407,6 +442,9 @@ abstract class _Contact implements Contact {
   String get contactName;
   @override // 到着したかどうか（offの場合はtrue）
   bool get isMatched;
+  @override
+  @UserConverter()
+  User get sentUser;
   @override
   bool get isFavorite;
   @override
