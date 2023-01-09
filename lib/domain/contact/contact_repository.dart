@@ -44,10 +44,19 @@ class ContactRepository {
 
   Future<List<Contact>> getMyContacts(List<String> contactIds) async {
     try {
+      if (contactIds.isEmpty) {
+        return [];
+      }
       final docs = await _db
           .collection(Contact.colPath)
-          .where('contactId', whereIn: contactIds)
+          .where(
+            'contactId',
+            whereIn: contactIds,
+          )
           .get();
+      if (docs.docs.isEmpty) {
+        return [];
+      }
 
       return docs.docs.map((doc) => Contact.fromJson(doc.data())).toList();
     } catch (e) {

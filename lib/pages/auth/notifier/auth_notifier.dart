@@ -46,7 +46,13 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
 
   Future<void> setNotification() async {
     final token = await _message.getToken();
-    state = AsyncValue.data(state.asData!.value.copyWith(tokenId: token!));
+    if (token == null) {
+      print('token is null');
+      return;
+    }
+    state = AsyncValue.data(
+      state.asData?.value.copyWith(tokenId: token) ?? AuthState(tokenId: token),
+    );
     print('🐯 FCM TOKEN: $token');
   }
 
@@ -100,7 +106,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
     state = const AsyncValue.loading();
     try {
       final user = await _authRepository.getUser(uid);
-      state = AsyncValue.data(AuthState(user: user));
+      state = AsyncValue.data(state.asData!.value.copyWith(user: user));
 
       return user;
     } on Exception catch (e, v) {
