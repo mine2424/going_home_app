@@ -6,11 +6,11 @@ class WidelyButton extends StatelessWidget {
     Key? key,
     required this.label,
     this.onPressed,
-    this.primary,
-    this.backgroundColor,
-    this.borderSide,
+    this.primary = kWhite,
+    this.backgroundColor = kPrimaryColor,
+    this.borderSide = BorderSide.none,
     this.textStyle,
-    this.weight,
+    this.weight = double.infinity,
     this.height,
   }) : super(key: key);
 
@@ -26,13 +26,13 @@ class WidelyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: weight ?? double.infinity,
+      width: weight,
       height: height,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          foregroundColor: primary ?? kWhite,
-          backgroundColor: backgroundColor ?? kPrimaryColor,
-          side: borderSide ?? BorderSide.none,
+          foregroundColor: primary,
+          backgroundColor: backgroundColor,
+          side: borderSide,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
