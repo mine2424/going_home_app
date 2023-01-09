@@ -36,35 +36,35 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
 
   Future<void> init() async {
     // this is production code //
-    // await getMyContactList();
+    await getMyContactList();
 
     // this is mock data //
-    state = const AsyncValue.data(
-      ContactState(
-        contacts: [
-          Contact(
-            contactId: 'test',
-            isFavorite: true,
-            contactName: 'test',
-            word: 'test',
-            notifyArea: NotifyArea.near,
-            users: [
-              User(
-                uid: 'AhzTGWGp6QBOBkHDUFJukZBrZwQT',
-                name: 'asdf',
-                contactIds: [],
-              ),
-              User(
-                uid: 'test2',
-                name: 'ttdd',
-                contactIds: [],
-              )
-            ],
-            currentGoalLocation: ContactLocation(latitude: 32, longitude: 45),
-          )
-        ],
-      ),
-    );
+    // state = const AsyncValue.data(
+    //   ContactState(
+    //     contacts: [
+    //       Contact(
+    //         contactId: 'test',
+    //         isFavorite: true,
+    //         contactName: 'test',
+    //         word: 'test',
+    //         notifyArea: NotifyArea.near,
+    //         users: [
+    //           User(
+    //             uid: 'AhzTGWGp6QBOBkHDUFJukZBrZwQT',
+    //             name: 'asdf',
+    //             contactIds: [],
+    //           ),
+    //           User(
+    //             uid: 'test2',
+    //             name: 'ttdd',
+    //             contactIds: [],
+    //           )
+    //         ],
+    //         currentGoalLocation: ContactLocation(latitude: 32, longitude: 45),
+    //       )
+    //     ],
+    //   ),
+    // );
   }
 
   void setLoading(bool isLoading) {
@@ -128,6 +128,10 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
     try {
       final user = await _authNotifier.getMyUser();
       final contacts = await _contactRepository.getMyContacts(user.contactIds);
+      if (contacts.isEmpty) {
+        state = AsyncValue.data(state.asData?.value ?? const ContactState());
+        return;
+      }
 
       state = AsyncValue.data(
         state.asData!.value.copyWith(contacts: contacts),
