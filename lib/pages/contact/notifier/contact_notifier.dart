@@ -128,6 +128,7 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
     try {
       final user = await _authNotifier.getMyUser();
       final contacts = await _contactRepository.getMyContacts(user.contactIds);
+      print('1 contacts: ${contacts.length}');
       if (contacts.isEmpty) {
         state = AsyncValue.data(state.asData?.value ?? const ContactState());
         return;
@@ -136,6 +137,7 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
       state = AsyncValue.data(
         state.asData!.value.copyWith(contacts: contacts),
       );
+      print('state contacts: ${state.asData!.value.contacts}');
     } catch (e) {
       print(e);
     }

@@ -67,6 +67,10 @@ class ContactHomePage extends ConsumerWidget {
                     'お気に入り',
                     style: Theme.of(context).textTheme.headline5,
                   ),
+                  if (contacts.contacts.isEmpty)
+                    const Text(
+                      'お気に入り登録しましょう！ \n ※連絡先の履歴から下のボタンをタップするとお気に入り登録できます。',
+                    ),
                   for (var i = 0; i < contacts.contacts.length; i++)
                     (contacts.contacts[i].isFavorite)
                         ? contactCard(
@@ -80,6 +84,8 @@ class ContactHomePage extends ConsumerWidget {
                     '連絡一覧',
                     style: Theme.of(context).textTheme.headline5,
                   ),
+                  if (contacts.contacts.isEmpty)
+                    const Text('まだ連絡先が登録されていません... \n 今すぐ登録しよう！'),
                   for (var i = 0; i < contacts.contacts.length; i++)
                     (!contacts.contacts[i].isFavorite)
                         ? contactCard(
