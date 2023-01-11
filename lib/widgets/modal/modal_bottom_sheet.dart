@@ -20,40 +20,40 @@ class ModalBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.28,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Consts.space4x(4)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: Consts.space4x(4)),
-            TextButton(
-              child: Text(
-                '〜〜さんを削除する',
-                style: Theme.of(context).textTheme.subtitle1,
+    return DefaultTextStyle(
+      style: Theme.of(context).textTheme.subtitle1!,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.28,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Consts.space4x(4)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: Consts.space4x(4)),
+              TextButton(
+                child: const Text(
+                  '〜〜さんを削除する',
+                ),
+                onPressed: () {},
               ),
-              onPressed: () {},
-            ),
-            const Divider(color: kDarkGray),
-            TextButton(
-              child: Text(
-                '文言を編集する',
-                style: Theme.of(context).textTheme.subtitle1,
+              const Divider(color: kDarkGray),
+              TextButton(
+                child: const Text(
+                  '文言を編集する',
+                ),
+                onPressed: () {},
               ),
-              onPressed: () {},
-            ),
-            const Divider(color: kDarkGray),
-            TextButton(
-              child: Text(
-                'お気に入りに追加する',
-                style: Theme.of(context).textTheme.subtitle1,
+              const Divider(color: kDarkGray),
+              TextButton(
+                child: const Text(
+                  'お気に入りに追加する',
+                ),
+                onPressed: () {},
               ),
-              onPressed: () {},
-            ),
-            SizedBox(height: Consts.space4x(10)),
-          ],
+              SizedBox(height: Consts.space4x(10)),
+            ],
+          ),
         ),
       ),
     );
