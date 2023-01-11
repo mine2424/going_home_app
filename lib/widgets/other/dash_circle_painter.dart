@@ -26,10 +26,11 @@ class DashedCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: DashedCirclePainter(
-          dashes: dashes,
-          color: color,
-          gapSize: gapSize,
-          strokeWidth: strokeWidth),
+        dashes: dashes,
+        color: color,
+        gapSize: gapSize,
+        strokeWidth: strokeWidth,
+      ),
       child: child,
     );
   }
@@ -41,11 +42,12 @@ class DashedCirclePainter extends CustomPainter {
   final double gapSize;
   final double strokeWidth;
 
-  DashedCirclePainter(
-      {this.dashes = _defaultDashes,
-      this.color = _defaultColor,
-      this.gapSize = _defaultGapSize,
-      this.strokeWidth = _defaultStrokeWidth});
+  DashedCirclePainter({
+    this.dashes = _defaultDashes,
+    this.color = _defaultColor,
+    this.gapSize = _defaultGapSize,
+    this.strokeWidth = _defaultStrokeWidth,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
