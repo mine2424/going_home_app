@@ -32,6 +32,10 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
 
   String get uid => _authService.currentUid!;
 
+  void updateProfileImage() {
+    // TODO: storage
+  }
+
   void changeFirstSignUp() {
     state = state.when(
       data: (data) => AsyncValue.data(data.copyWith(isFirstSignUp: true)),

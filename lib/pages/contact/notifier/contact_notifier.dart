@@ -52,7 +52,7 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
             contactId: 'test',
             isFavorite: true,
             contactName: 'お母さん',
-            word: 'test',
+            word: '今から帰ります',
             notifyArea: NotifyArea.near,
             users: [
               User(

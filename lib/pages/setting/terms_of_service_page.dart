@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class RequestPage extends StatelessWidget {
-  const RequestPage({super.key});
+class TermsOfServicePage extends StatelessWidget {
+  const TermsOfServicePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = WebViewController()
       ..loadRequest(
-        Uri.parse('https://forms.gle/43s7ggJ2wbKuM8Zb7'),
+        Uri.parse('https://going-home-a47ce.web.app/terms_of_service.html'),
       );
     return Scaffold(
       appBar: AppBar(
-        title: const Text('お問い合わせ'),
+        title: const Text('利用規約'),
       ),
       body: WebViewWidget(controller: controller),
     );

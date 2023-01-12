@@ -11,9 +11,9 @@ class SettingPage extends StatelessWidget {
       '使い方': RoutePath.add_profile.toStr,
       'プロフィール編集': RoutePath.add_profile.toStr,
       'お知らせ': RoutePath.news.toStr,
-      '利用規約': RoutePath.add_profile.toStr,
-      'プライバシーポリシー': RoutePath.add_profile.toStr,
-      'お問い合わせ・ご要望': RoutePath.add_profile.toStr,
+      '利用規約': RoutePath.terms_of_service.toStr,
+      'プライバシーポリシー': RoutePath.privacy_policy.toStr,
+      'お問い合わせ・ご要望': RoutePath.request.toStr,
     };
 
     return Scaffold(

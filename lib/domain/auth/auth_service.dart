@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:going_home_app/domain/auth/enums/auth_status.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -127,4 +128,8 @@ class AuthService {
       print(e);
     }
   }
+
+  final _storage = FirebaseStorage.instance;
+
+  void addProfileImageForStorage() {}
 }

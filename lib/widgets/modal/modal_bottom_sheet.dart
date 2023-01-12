@@ -56,7 +56,7 @@ class ModalBottomSheet extends ConsumerWidget {
     final stat = ref.watch(contactNotifierProvider).asData!.value;
     final noti = ref.watch(contactNotifierProvider.notifier);
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.28,
+      height: MediaQuery.of(context).size.height * 0.4,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: Consts.space4x(4)),
         child: Column(
@@ -91,6 +91,16 @@ class ModalBottomSheet extends ConsumerWidget {
               ),
               onPressed: () {
                 noti.updateIsFavorite();
+              },
+            ),
+            const Divider(color: kDarkGray),
+            TextButton(
+              child: Text(
+                '到着場所を設定する',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              onPressed: () {
+                //
               },
             ),
             SizedBox(height: Consts.space4x(10)),

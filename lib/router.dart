@@ -10,6 +10,9 @@ import 'package:going_home_app/pages/auth/sign_up_page.dart';
 import 'package:going_home_app/pages/contact/add_goal_location.dart';
 import 'package:going_home_app/pages/contact/contact_history_page.dart';
 import 'package:going_home_app/pages/setting/news_page.dart';
+import 'package:going_home_app/pages/setting/privacy_policy_page.dart';
+import 'package:going_home_app/pages/setting/request_page.dart';
+import 'package:going_home_app/pages/setting/terms_of_service_page.dart';
 import 'package:going_home_app/pages/setting/setting_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -27,6 +30,9 @@ enum RoutePath {
   contact_history,
   add_goal_location,
   setting,
+  privacy_policy,
+  terms_of_service,
+  request,
   news;
 
   String get toStr => '/$name';
@@ -84,6 +90,18 @@ final routerProvider = Provider(
         GoRoute(
           path: RoutePath.news.toStr,
           builder: (context, state) => const NewsPage(),
+        ),
+        GoRoute(
+          path: RoutePath.privacy_policy.toStr,
+          builder: (context, state) => const PrivacyPolicyPage(),
+        ),
+        GoRoute(
+          path: RoutePath.terms_of_service.toStr,
+          builder: (context, state) => const TermsOfServicePage(),
+        ),
+        GoRoute(
+          path: RoutePath.request.toStr,
+          builder: (context, state) => const RequestPage(),
         ),
       ],
       redirect: (_, state) {

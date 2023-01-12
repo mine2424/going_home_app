@@ -117,8 +117,8 @@ class ContactHomePage extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: GestureDetector(
         onTap: () => (contact.isMatched)
-            ? showAbortDialog(context)
-            : showNotificationDialog(context, contact, hiNoti),
+            ? showNotificationDialog(context, contact, hiNoti)
+            : showAbortDialog(context),
         onLongPress: () {
           noti.setSelectedContact(contact);
           const ModalBottomSheet().show(context);
