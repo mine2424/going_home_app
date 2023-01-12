@@ -52,7 +52,7 @@ exports.startContactNoticicationTrace = functions.region(CLOUD_REGION).firestore
     if (beIsMatched !== afIsMatched) { 
       var title = '';
       if (afIsMatched === true) {
-        title = `${name}さんが${word}だそうです。`
+        title = `${name}さんが${word}そうです。`
         console.log(title)
       } else if (afIsMatched === false) { 
         title = `${name}さんがまもなく到着されます。`

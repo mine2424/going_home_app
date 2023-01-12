@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:going_home_app/common/packages/cool_dropdown/cool_dropdown_item.dart';
 import 'package:going_home_app/common/packages/ulid.dart';
@@ -30,7 +32,7 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
   final AuthNotifier _authNotifier;
 
   final searchUserController = TextEditingController();
-  final wordController = TextEditingController();
+  final wordController = TextEditingController(text: '今から帰ります');
 
   String get myUid => _authNotifier.uid;
 
@@ -39,47 +41,94 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
     await getMyContactList();
 
     // this is mock data //
-    // state = const AsyncValue.data(
-    //   ContactState(
-    //     contacts: [
-    //       Contact(
-    //         contactId: 'test',
-    //         isFavorite: true,
-    //         contactName: 'test',
-    //         word: 'test',
-    //         notifyArea: NotifyArea.near,
-    //         users: [
-    //           User(
-    //             uid: 'AhzTGWGp6QBOBkHDUFJukZBrZwQT',
-    //             name: 'asdf',
-    //             contactIds: [],
-    //           ),
-    //           User(
-    //             uid: 'test2',
-    //             name: 'ttdd',
-    //             contactIds: [],
-    //           )
-    //         ],
-    //         currentGoalLocation: ContactLocation(latitude: 32, longitude: 45),
-    //       )
-    //     ],
-    //   ),
-    // );
+    // addMock();
+  }
+
+  void addMock() {
+    state = const AsyncValue.data(
+      ContactState(
+        contacts: [
+          Contact(
+            contactId: 'test',
+            isFavorite: true,
+            contactName: 'お母さん',
+            word: 'test',
+            notifyArea: NotifyArea.near,
+            users: [
+              User(
+                uid: 'AhzTGWGp6QBOBkHDUFJukZBrZwQT',
+                name: 'お母さん',
+                contactIds: [],
+              ),
+              User(
+                uid: 'test2',
+                name: 'お母さん',
+                contactIds: [],
+              )
+            ],
+            currentGoalLocation: ContactLocation(latitude: 32, longitude: 45),
+          ),
+          Contact(
+            contactId: 'test2',
+            isFavorite: false,
+            contactName: 'お父さん',
+            word: 'test',
+            notifyArea: NotifyArea.near,
+            users: [
+              User(
+                uid: 'AhzTGWGp6QBOBkHDUFJukZBrZwQT',
+                name: 'お父さん',
+                contactIds: [],
+              ),
+              User(
+                uid: 'test2',
+                name: 'お父さん',
+                contactIds: [],
+              )
+            ],
+            currentGoalLocation: ContactLocation(latitude: 32, longitude: 45),
+          )
+        ],
+      ),
+    );
   }
 
   void setLoading(bool isLoading) {
     state = const AsyncValue.loading();
   }
 
-  void changeIsFavorite(bool val) {
+  void setIsFavorite() {
+    final stat = state.asData?.value ?? const ContactState();
+    if (stat == const ContactState()) {
+      return;
+    }
     state = AsyncValue.data(
-      state.asData!.value.copyWith(isFavorite: val),
+      stat.copyWith(isFavorite: !state.asData!.value.isFavorite),
     );
+  }
+
+  Future<void> updateIsFavorite() async {
+    final stat = state.asData?.value ?? const ContactState();
+    if (stat == const ContactState()) {
+      return;
+    }
+    final newContact =
+        stat.selectedContact.copyWith(isFavorite: !stat.isFavorite);
+    await updateContact(newContact);
   }
 
   void changeNotifyArea(CoolDropdownItem val) {
     final area = const NotifyAreaConverter().fromJson(val.value!);
     state = AsyncValue.data(state.asData!.value.copyWith(notifyArea: area));
+  }
+
+  Future<void> updateWord() async {
+    final stat = state.asData?.value ?? const ContactState();
+    if (stat == const ContactState()) {
+      return;
+    }
+    final newContact = stat.selectedContact.copyWith(word: wordController.text);
+    await updateContact(newContact);
   }
 
   void setGoalLocation(LatLng latLng) {
@@ -93,24 +142,25 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
     );
   }
 
+  void setSelectedContact(Contact contact) {
+    state = AsyncValue.data(
+      state.asData!.value.copyWith(selectedContact: contact),
+    );
+  }
+
   Future<void> searchContactUser(String val) async {
-    state = const AsyncValue.loading();
+    final newState = state.asData?.value ?? const ContactState();
     try {
       // uidで検索してヒットした場合はそのユーザーを返す
       final userByUid = await _contactRepository.searchContactUserByUid(val);
       if (userByUid != const User()) {
-        print(userByUid);
-        state = AsyncValue.data(
-          state.asData!.value.copyWith(searchedUsers: [userByUid]),
-        );
+        state = AsyncValue.data(newState.copyWith(searchedUsers: [userByUid]));
         return;
       }
 
       // uidで検索してヒットしなかった場合はnameで検索する
       final usersByName = await _contactRepository.searchContactUserByName(val);
-      state = AsyncValue.data(
-        state.asData!.value.copyWith(searchedUsers: usersByName),
-      );
+      state = AsyncValue.data(newState.copyWith(searchedUsers: usersByName));
       return;
     } catch (e) {
       print(e);
@@ -124,22 +174,22 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
   }
 
   Future<void> getMyContactList() async {
-    state = const AsyncValue.loading();
     try {
+      sleep(const Duration(milliseconds: 200));
+      final stat = state.asData?.value ?? const ContactState();
       final user = await _authNotifier.getMyUser();
       final contacts = await _contactRepository.getMyContacts(user.contactIds);
-      print('1 contacts: ${contacts.length}');
+
       if (contacts.isEmpty) {
-        state = AsyncValue.data(state.asData?.value ?? const ContactState());
+        state = AsyncValue.data(stat);
         return;
       }
 
-      state = AsyncValue.data(
-        state.asData!.value.copyWith(contacts: contacts),
-      );
-      print('state contacts: ${state.asData!.value.contacts}');
-    } catch (e) {
+      state = AsyncValue.data(stat.copyWith(contacts: contacts));
+    } catch (e, s) {
       print(e);
+      print(s);
+      throw Exception('Failed to get my contact list.');
     }
   }
 
@@ -152,10 +202,8 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
   }
 
   Future<bool> addContact() async {
-    state = const AsyncValue.loading();
-
-    final stat = state.asData!.value;
-    if (stat.contactUsers.isEmpty) {
+    final stat = state.asData?.value;
+    if (stat == null || stat.contactUsers.isEmpty) {
       return false;
     }
 
@@ -176,7 +224,7 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
         contactId: contactId,
         // INFO: 複数人になった場合は名前ではなくて、グループ名にする
         contactName: stat.contactUsers.first.name,
-        word: stat.word,
+        word: wordController.text,
         currentGoalLocation: stat.goalLocation,
         goalLocationList: [stat.goalLocation],
         isFavorite: stat.isFavorite,
@@ -188,10 +236,78 @@ class ContactNotifier extends StateNotifier<AsyncValue<ContactState>> {
 
       await _contactRepository.addContact(contact);
       await _authNotifier.addContactId(contact);
+      state = AsyncValue.data(
+        stat.copyWith(contacts: [...stat.contacts, contact]),
+      );
       return true;
+    } catch (e, s) {
+      print('addContact error: $e, $s');
+      throw Exception('Failed to add contact user.');
+    }
+  }
+
+  Future<void> updateContact(Contact newContact) async {
+    final stat = state.asData?.value;
+    if (stat == null || stat.selectedContact == const Contact()) {
+      return;
+    }
+
+    try {
+      await _contactRepository.updateContact(newContact);
+    } catch (e, s) {
+      print('updateContact error: $e \n $s');
+      throw Exception('Failed to update contact user.');
+    }
+
+    final newStat = ContactState(
+      contacts: stat.contacts
+          .map(
+            (old) => old.contactId == newContact.contactId ? newContact : old,
+          )
+          .toList(),
+    );
+    state = AsyncValue.data(newStat);
+  }
+
+  Future<void> removeContactUser(String contactId) async {
+    try {
+      final stat = state.asData?.value ?? const ContactState();
+
+      // myUserからcontactIdを削除
+      final myselfUser = await _authNotifier.getMyUserForContact();
+      final newMyselfUser = myselfUser.copyWith(
+        contactIds: myselfUser.contactIds
+            .where((element) => element != stat.deletedContactId)
+            .toList(),
+      );
+      await _authNotifier.saveUser(newMyselfUser);
+
+      // 相手のUserからcontactIdを削除
+      final otherUid = stat.contactUsers
+          .firstWhere((element) => element.uid != myselfUser.uid)
+          .uid;
+      final otherUser = await _authNotifier.getUser(otherUid);
+      final newOtherUser = otherUser.copyWith(
+        contactIds: otherUser.contactIds
+            .where((element) => element != stat.deletedContactId)
+            .toList(),
+      );
+      await _authNotifier.saveUser(newOtherUser);
+
+      // Contactを削除
+      await _contactRepository.removeContactUser(contactId);
+
+      // stateにも反映
+      final newContactState = stat.copyWith(
+        contacts: stat.contacts
+            .where((element) => element.contactId != stat.deletedContactId)
+            .toList(),
+        deletedContactId: '',
+      );
+      state = AsyncValue.data(newContactState);
     } catch (e) {
       print(e);
-      throw Exception('Failed to add contact user.');
+      throw Exception('Failed to remove contact user.');
     }
   }
 }

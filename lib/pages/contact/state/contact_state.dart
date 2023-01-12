@@ -16,10 +16,11 @@ class ContactState with _$ContactState {
     @Default(false) bool isLoading,
     @ContactConverter() @Default(<Contact>[]) List<Contact> contacts,
     @UserConverter() @Default(<User>[]) List<User> searchedUsers,
+    @Default('') String deletedContactId,
+    @ContactConverter() @Default(Contact()) Contact selectedContact,
 
     // form
     @UserConverter() @Default(<User>[]) List<User> contactUsers,
-    @Default('') String word,
     @Default(false) bool isFavorite,
     @Default(NotifyArea.none) NotifyArea notifyArea,
     @ContactLocationConverter()

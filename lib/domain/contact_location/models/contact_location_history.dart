@@ -21,5 +21,5 @@ class ContactLocationHistory with _$ContactLocationHistory {
 
   static String get colPath => '/private/contact_history/v1';
 
-  static String docPath(String contactId) => '$colPath/$contactId';
+  static String contactColPath(String contactId) => '$colPath/$contactId/v1';
 }

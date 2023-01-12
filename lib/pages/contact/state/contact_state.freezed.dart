@@ -24,10 +24,12 @@ mixin _$ContactState {
   @ContactConverter()
   List<Contact> get contacts => throw _privateConstructorUsedError;
   @UserConverter()
-  List<User> get searchedUsers => throw _privateConstructorUsedError; // form
+  List<User> get searchedUsers => throw _privateConstructorUsedError;
+  String get deletedContactId => throw _privateConstructorUsedError;
+  @ContactConverter()
+  Contact get selectedContact => throw _privateConstructorUsedError; // form
   @UserConverter()
   List<User> get contactUsers => throw _privateConstructorUsedError;
-  String get word => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   NotifyArea get notifyArea => throw _privateConstructorUsedError;
   @ContactLocationConverter()
@@ -49,12 +51,14 @@ abstract class $ContactStateCopyWith<$Res> {
       {bool isLoading,
       @ContactConverter() List<Contact> contacts,
       @UserConverter() List<User> searchedUsers,
+      String deletedContactId,
+      @ContactConverter() Contact selectedContact,
       @UserConverter() List<User> contactUsers,
-      String word,
       bool isFavorite,
       NotifyArea notifyArea,
       @ContactLocationConverter() ContactLocation goalLocation});
 
+  $ContactCopyWith<$Res> get selectedContact;
   $ContactLocationCopyWith<$Res> get goalLocation;
 }
 
@@ -74,8 +78,9 @@ class _$ContactStateCopyWithImpl<$Res, $Val extends ContactState>
     Object? isLoading = null,
     Object? contacts = null,
     Object? searchedUsers = null,
+    Object? deletedContactId = null,
+    Object? selectedContact = null,
     Object? contactUsers = null,
-    Object? word = null,
     Object? isFavorite = null,
     Object? notifyArea = null,
     Object? goalLocation = null,
@@ -93,14 +98,18 @@ class _$ContactStateCopyWithImpl<$Res, $Val extends ContactState>
           ? _value.searchedUsers
           : searchedUsers // ignore: cast_nullable_to_non_nullable
               as List<User>,
+      deletedContactId: null == deletedContactId
+          ? _value.deletedContactId
+          : deletedContactId // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedContact: null == selectedContact
+          ? _value.selectedContact
+          : selectedContact // ignore: cast_nullable_to_non_nullable
+              as Contact,
       contactUsers: null == contactUsers
           ? _value.contactUsers
           : contactUsers // ignore: cast_nullable_to_non_nullable
               as List<User>,
-      word: null == word
-          ? _value.word
-          : word // ignore: cast_nullable_to_non_nullable
-              as String,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -114,6 +123,14 @@ class _$ContactStateCopyWithImpl<$Res, $Val extends ContactState>
           : goalLocation // ignore: cast_nullable_to_non_nullable
               as ContactLocation,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ContactCopyWith<$Res> get selectedContact {
+    return $ContactCopyWith<$Res>(_value.selectedContact, (value) {
+      return _then(_value.copyWith(selectedContact: value) as $Val);
+    });
   }
 
   @override
@@ -137,12 +154,15 @@ abstract class _$$_ContactStateCopyWith<$Res>
       {bool isLoading,
       @ContactConverter() List<Contact> contacts,
       @UserConverter() List<User> searchedUsers,
+      String deletedContactId,
+      @ContactConverter() Contact selectedContact,
       @UserConverter() List<User> contactUsers,
-      String word,
       bool isFavorite,
       NotifyArea notifyArea,
       @ContactLocationConverter() ContactLocation goalLocation});
 
+  @override
+  $ContactCopyWith<$Res> get selectedContact;
   @override
   $ContactLocationCopyWith<$Res> get goalLocation;
 }
@@ -161,8 +181,9 @@ class __$$_ContactStateCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? contacts = null,
     Object? searchedUsers = null,
+    Object? deletedContactId = null,
+    Object? selectedContact = null,
     Object? contactUsers = null,
-    Object? word = null,
     Object? isFavorite = null,
     Object? notifyArea = null,
     Object? goalLocation = null,
@@ -180,14 +201,18 @@ class __$$_ContactStateCopyWithImpl<$Res>
           ? _value._searchedUsers
           : searchedUsers // ignore: cast_nullable_to_non_nullable
               as List<User>,
+      deletedContactId: null == deletedContactId
+          ? _value.deletedContactId
+          : deletedContactId // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedContact: null == selectedContact
+          ? _value.selectedContact
+          : selectedContact // ignore: cast_nullable_to_non_nullable
+              as Contact,
       contactUsers: null == contactUsers
           ? _value._contactUsers
           : contactUsers // ignore: cast_nullable_to_non_nullable
               as List<User>,
-      word: null == word
-          ? _value.word
-          : word // ignore: cast_nullable_to_non_nullable
-              as String,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -211,8 +236,9 @@ class _$_ContactState implements _ContactState {
       {this.isLoading = false,
       @ContactConverter() final List<Contact> contacts = const <Contact>[],
       @UserConverter() final List<User> searchedUsers = const <User>[],
+      this.deletedContactId = '',
+      @ContactConverter() this.selectedContact = const Contact(),
       @UserConverter() final List<User> contactUsers = const <User>[],
-      this.word = '',
       this.isFavorite = false,
       this.notifyArea = NotifyArea.none,
       @ContactLocationConverter() this.goalLocation = const ContactLocation()})
@@ -246,6 +272,13 @@ class _$_ContactState implements _ContactState {
     return EqualUnmodifiableListView(_searchedUsers);
   }
 
+  @override
+  @JsonKey()
+  final String deletedContactId;
+  @override
+  @JsonKey()
+  @ContactConverter()
+  final Contact selectedContact;
 // form
   final List<User> _contactUsers;
 // form
@@ -260,9 +293,6 @@ class _$_ContactState implements _ContactState {
 
   @override
   @JsonKey()
-  final String word;
-  @override
-  @JsonKey()
   final bool isFavorite;
   @override
   @JsonKey()
@@ -274,7 +304,7 @@ class _$_ContactState implements _ContactState {
 
   @override
   String toString() {
-    return 'ContactState(isLoading: $isLoading, contacts: $contacts, searchedUsers: $searchedUsers, contactUsers: $contactUsers, word: $word, isFavorite: $isFavorite, notifyArea: $notifyArea, goalLocation: $goalLocation)';
+    return 'ContactState(isLoading: $isLoading, contacts: $contacts, searchedUsers: $searchedUsers, deletedContactId: $deletedContactId, selectedContact: $selectedContact, contactUsers: $contactUsers, isFavorite: $isFavorite, notifyArea: $notifyArea, goalLocation: $goalLocation)';
   }
 
   @override
@@ -287,9 +317,12 @@ class _$_ContactState implements _ContactState {
             const DeepCollectionEquality().equals(other._contacts, _contacts) &&
             const DeepCollectionEquality()
                 .equals(other._searchedUsers, _searchedUsers) &&
+            (identical(other.deletedContactId, deletedContactId) ||
+                other.deletedContactId == deletedContactId) &&
+            (identical(other.selectedContact, selectedContact) ||
+                other.selectedContact == selectedContact) &&
             const DeepCollectionEquality()
                 .equals(other._contactUsers, _contactUsers) &&
-            (identical(other.word, word) || other.word == word) &&
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite) &&
             (identical(other.notifyArea, notifyArea) ||
@@ -305,8 +338,9 @@ class _$_ContactState implements _ContactState {
       isLoading,
       const DeepCollectionEquality().hash(_contacts),
       const DeepCollectionEquality().hash(_searchedUsers),
+      deletedContactId,
+      selectedContact,
       const DeepCollectionEquality().hash(_contactUsers),
-      word,
       isFavorite,
       notifyArea,
       goalLocation);
@@ -330,8 +364,9 @@ abstract class _ContactState implements ContactState {
           {final bool isLoading,
           @ContactConverter() final List<Contact> contacts,
           @UserConverter() final List<User> searchedUsers,
+          final String deletedContactId,
+          @ContactConverter() final Contact selectedContact,
           @UserConverter() final List<User> contactUsers,
-          final String word,
           final bool isFavorite,
           final NotifyArea notifyArea,
           @ContactLocationConverter() final ContactLocation goalLocation}) =
@@ -348,11 +383,14 @@ abstract class _ContactState implements ContactState {
   @override
   @UserConverter()
   List<User> get searchedUsers;
+  @override
+  String get deletedContactId;
+  @override
+  @ContactConverter()
+  Contact get selectedContact;
   @override // form
   @UserConverter()
   List<User> get contactUsers;
-  @override
-  String get word;
   @override
   bool get isFavorite;
   @override

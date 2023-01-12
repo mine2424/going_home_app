@@ -54,12 +54,15 @@ dependencies:
   go_router: ^6.0.0
   flutter_share: ^2.0.0
   flutter_config: ^2.0.0
+  webview_flutter: ^4.0.1
+  flutter_native_splash: ^2.2.16
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.11.0
 
   flutter_flavorizr: ^2.1.5
   build_runner: ^2.3.2
@@ -82,17 +85,27 @@ flavorizr:
         name: 'going_home_app_dev'
 
       android:
-        applicationId: 'going_home.app.dev'
+        applicationId: 'goinHome.app.dev'
 
       ios:
-        bundleId: 'going_home.app.dev'
+        bundleId: 'goingHome.app.dev'
 
     prod:
       app:
         name: 'going_home_app_prod'
 
       android:
-        applicationId: 'going_home.app.prod'
+        applicationId: 'goingHome.app.prod'
 
       ios:
-        bundleId: 'going_home.app.prod'
+        bundleId: 'goingHome.app.prod'
+
+flutter_icons:
+  android: 'launcher_icon'
+  ios: true
+  image_path: 'assets/images/going_home_logo.png'
+  min_sdk_android: 21
+
+flutter_native_splash:
+  image: 'assets/images/going_home_onboarding.png'
+  color: 'F2BA8C'

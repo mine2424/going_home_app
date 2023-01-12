@@ -20,7 +20,7 @@ final authStatusProvider = StreamProvider<AuthStatus?>((ref) async* {
 class AuthService {
   final _auth = FirebaseAuth.instance;
 
-  String get currentUid => _auth.currentUser!.uid;
+  String? get currentUid => _auth.currentUser?.uid;
 
   Stream<User?> authStateChanges() {
     return _auth.authStateChanges();

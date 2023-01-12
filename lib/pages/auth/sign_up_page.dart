@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:go_router/go_router.dart';
@@ -140,8 +142,8 @@ class SignUpPage extends ConsumerWidget {
 
                     await judgeNavigation(context, authNotifier);
                     await authNotifier.createUserWithEmailAndPassword();
+                    sleep(const Duration(milliseconds: 100));
                     await authNotifier.addUser();
-                    // context.go(RoutePath.contact_home.toStr);
                   },
                   backgroundColor: kDarkGray,
                   textStyle: Theme.of(context)

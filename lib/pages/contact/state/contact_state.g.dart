@@ -19,12 +19,16 @@ _$_ContactState _$$_ContactStateFromJson(Map<String, dynamic> json) =>
                   const UserConverter().fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <User>[],
+      deletedContactId: json['deletedContactId'] as String? ?? '',
+      selectedContact: json['selectedContact'] == null
+          ? const Contact()
+          : const ContactConverter()
+              .fromJson(json['selectedContact'] as Map<String, dynamic>),
       contactUsers: (json['contactUsers'] as List<dynamic>?)
               ?.map((e) =>
                   const UserConverter().fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <User>[],
-      word: json['word'] as String? ?? '',
       isFavorite: json['isFavorite'] as bool? ?? false,
       notifyArea:
           $enumDecodeNullable(_$NotifyAreaEnumMap, json['notifyArea']) ??
@@ -42,9 +46,11 @@ Map<String, dynamic> _$$_ContactStateToJson(_$_ContactState instance) =>
           instance.contacts.map(const ContactConverter().toJson).toList(),
       'searchedUsers':
           instance.searchedUsers.map(const UserConverter().toJson).toList(),
+      'deletedContactId': instance.deletedContactId,
+      'selectedContact':
+          const ContactConverter().toJson(instance.selectedContact),
       'contactUsers':
           instance.contactUsers.map(const UserConverter().toJson).toList(),
-      'word': instance.word,
       'isFavorite': instance.isFavorite,
       'notifyArea': _$NotifyAreaEnumMap[instance.notifyArea]!,
       'goalLocation':

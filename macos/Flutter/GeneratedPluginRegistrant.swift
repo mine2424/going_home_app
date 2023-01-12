@@ -13,7 +13,6 @@ import firebase_crashlytics
 import firebase_messaging
 import firebase_remote_config
 import firebase_storage
-import geolocator_apple
 import location
 import path_provider_macos
 import sign_in_with_apple
@@ -27,7 +26,6 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FLTFirebaseMessagingPlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseMessagingPlugin"))
   FLTFirebaseRemoteConfigPlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseRemoteConfigPlugin"))
   FLTFirebaseStoragePlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseStoragePlugin"))
-  GeolocatorPlugin.register(with: registry.registrar(forPlugin: "GeolocatorPlugin"))
   LocationPlugin.register(with: registry.registrar(forPlugin: "LocationPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
   SignInWithApplePlugin.register(with: registry.registrar(forPlugin: "SignInWithApplePlugin"))

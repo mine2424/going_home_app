@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:going_home_app/pages/auth/add_profile_page.dart';
@@ -92,6 +94,7 @@ final routerProvider = Provider(
             state.subloc == RoutePath.signUp.toStr;
 
         if (isNone && !isProcessing) {
+          sleep(const Duration(milliseconds: 100));
           return RoutePath.onBoarding.toStr;
         }
 

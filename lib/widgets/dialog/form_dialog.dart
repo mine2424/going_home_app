@@ -6,7 +6,7 @@ class FormDialog extends ConsumerWidget {
   const FormDialog({
     Key? key,
     required this.titleText,
-    required this.memoText,
+    this.memoText = '',
     required this.hintText,
     required this.textController,
     required this.onPressed,

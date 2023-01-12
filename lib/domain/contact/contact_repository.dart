@@ -12,7 +12,6 @@ class ContactRepository {
   Future<User> searchContactUserByUid(String uid) async {
     try {
       final doc = await _db.doc(User.docPath(uid)).get();
-      print(doc);
       if (!doc.exists) {
         return const User();
       }
@@ -47,6 +46,14 @@ class ContactRepository {
       if (contactIds.isEmpty) {
         return [];
       }
+      if (contactIds.length == 1) {
+        final doc = await _db.doc(Contact.docPath(contactIds.first)).get();
+        if (!doc.exists) {
+          return [];
+        }
+
+        return [Contact.fromJson(doc.data()!)];
+      }
       final docs = await _db
           .collection(Contact.colPath)
           .where(
@@ -59,8 +66,9 @@ class ContactRepository {
       }
 
       return docs.docs.map((doc) => Contact.fromJson(doc.data())).toList();
-    } catch (e) {
+    } catch (e, s) {
       print(e);
+      print(s);
       throw Exception('Failed to get contacts.');
     }
   }
@@ -68,8 +76,8 @@ class ContactRepository {
   Future<void> addContact(Contact contact) async {
     try {
       await _db.doc(Contact.docPath(contact.contactId)).set(contact.toJson());
-    } catch (e) {
-      print(e);
+    } catch (e, stackTrace) {
+      print('e: $e\nstackTrace: $stackTrace');
       throw Exception('Failed to add contact user.');
     }
   }
@@ -77,8 +85,6 @@ class ContactRepository {
   Future<void> removeContactUser(String contactId) async {
     try {
       await _db.doc(Contact.docPath(contactId)).delete();
-      // TODO: userのcontactIdsからも削除する
-      // TODO: 相手側のユーザーのcontactIdsからも削除する
     } catch (e) {
       print(e);
       throw Exception('Failed to remove contact user.');
@@ -96,26 +102,6 @@ class ContactRepository {
     } catch (e) {
       print(e);
       throw Exception('Failed to update contact word.');
-    }
-  }
-
-  Future<void> startContactTrace(Contact contact) async {
-    try {
-      // トレースを開始する
-
-      // TODO: isMatchedをfalseにする
-      // TODO: 相手側のユーザーのisMatchedをfalseにする
-      // TODO: 終了後、位置情報オフにして、isMatchedをtrueにする
-
-      // これ以下は別の責務
-      // TODO: 位置情報オンにする
-      // TODO: 最後に位置情報の記録をDBに保存する
-
-      // トレースを終了する
-
-    } catch (e) {
-      print(e);
-      throw Exception('Failed to start contact.');
     }
   }
 }

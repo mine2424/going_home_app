@@ -22,12 +22,6 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       name: json['name'] as String? ?? '',
       profileImageUrl: json['profileImageUrl'] as String? ?? '',
       occupation: json['occupation'] as String? ?? '',
-      sex: json['sex'] == null
-          ? Sex.none
-          : const SexConverter().fromJson(json['sex'] as String),
-      household: json['household'] == null
-          ? Household.none
-          : const HouseholdConverter().fromJson(json['household'] as String),
       birthday: const NullableDatetimeTimestampConverter()
           .fromJson(json['birthday'] as Timestamp?),
       createdAt: const NullableDatetimeTimestampConverter()
@@ -44,8 +38,6 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'name': instance.name,
       'profileImageUrl': instance.profileImageUrl,
       'occupation': instance.occupation,
-      'sex': const SexConverter().toJson(instance.sex),
-      'household': const HouseholdConverter().toJson(instance.household),
       'birthday':
           const NullableDatetimeTimestampConverter().toJson(instance.birthday),
       'createdAt':

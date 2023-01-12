@@ -30,7 +30,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
 
-  String get uid => _authService.currentUid;
+  String get uid => _authService.currentUid!;
 
   void changeFirstSignUp() {
     state = state.when(
@@ -50,8 +50,9 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
       print('token is null');
       return;
     }
+    final newState = state.asData?.value ?? const AuthState();
     state = AsyncValue.data(
-      state.asData?.value.copyWith(tokenId: token) ?? AuthState(tokenId: token),
+      newState.copyWith(tokenId: token),
     );
     print('🐯 FCM TOKEN: $token');
   }
@@ -63,7 +64,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
       await requestNotiPermission();
       await setNotification();
       final user = User(
-        uid: _authService.currentUid,
+        uid: uid,
         name: nameController.text,
         tokenId: state.asData!.value.tokenId,
         createdAt: DateTime.now(),
@@ -75,8 +76,6 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
   }
 
   Future<void> addContactId(Contact newContact) async {
-    state = const AsyncValue.loading();
-
     try {
       final users = newContact.users;
 
@@ -84,16 +83,16 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
         await saveUser(user);
       }
     } on Exception catch (e, v) {
+      print('🐯 addContactId error: $e, $v');
       state = AsyncValue.error(e, v);
     }
   }
 
   Future<void> saveUser(User user) async {
-    state = const AsyncValue.loading();
-
     try {
       await _authRepository.saveUser(user);
     } on Exception catch (e, v) {
+      print('🐯 saveUser error: $e, $v');
       state = AsyncValue.error(e, v);
     }
   }
@@ -111,19 +110,20 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
       return user;
     } on Exception catch (e, v) {
       state = AsyncValue.error(e, v);
+      print('🐯 getUser error: $e, $v');
       rethrow;
     }
   }
 
   Future<User> getMyUser() async {
-    state = const AsyncValue.loading();
     try {
-      final user = await _authRepository.getUser(_authService.currentUid);
+      final user = await _authRepository.getUser(uid);
       state = AsyncValue.data(AuthState(user: user));
 
       return user;
     } on Exception catch (e, v) {
       state = AsyncValue.error(e, v);
+      print('🐯 getMyUser error: $e, $v');
       rethrow;
     }
   }
@@ -141,15 +141,12 @@ class AuthNotifier extends StateNotifier<AsyncValue<AuthState>> {
     }
   }
 
-  Future<void> signInWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signInWithEmailAndPassword() async {
     state = const AsyncValue.loading();
     try {
       await _authService.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: emailController.text,
+        password: passwordController.text,
       );
       state = const AsyncValue.data(AuthState());
     } on Exception catch (e, v) {

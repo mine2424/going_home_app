@@ -28,11 +28,9 @@ mixin _$User {
   List<String> get familyContactIds => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get profileImageUrl => throw _privateConstructorUsedError;
-  String get occupation => throw _privateConstructorUsedError;
-  @SexConverter()
-  Sex get sex => throw _privateConstructorUsedError;
-  @HouseholdConverter()
-  Household get household => throw _privateConstructorUsedError;
+  String get occupation =>
+      throw _privateConstructorUsedError; // @SexConverter() @Default(Sex.none) Sex sex,
+// @HouseholdConverter() @Default(Household.none) Household household,
   @NullableDatetimeTimestampConverter()
   DateTime? get birthday => throw _privateConstructorUsedError;
   @NullableDatetimeTimestampConverter()
@@ -58,8 +56,6 @@ abstract class $UserCopyWith<$Res> {
       String name,
       String profileImageUrl,
       String occupation,
-      @SexConverter() Sex sex,
-      @HouseholdConverter() Household household,
       @NullableDatetimeTimestampConverter() DateTime? birthday,
       @NullableDatetimeTimestampConverter() DateTime? createdAt});
 }
@@ -86,8 +82,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? name = null,
     Object? profileImageUrl = null,
     Object? occupation = null,
-    Object? sex = null,
-    Object? household = null,
     Object? birthday = freezed,
     Object? createdAt = freezed,
   }) {
@@ -128,14 +122,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.occupation
           : occupation // ignore: cast_nullable_to_non_nullable
               as String,
-      sex: null == sex
-          ? _value.sex
-          : sex // ignore: cast_nullable_to_non_nullable
-              as Sex,
-      household: null == household
-          ? _value.household
-          : household // ignore: cast_nullable_to_non_nullable
-              as Household,
       birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
@@ -164,8 +150,6 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String name,
       String profileImageUrl,
       String occupation,
-      @SexConverter() Sex sex,
-      @HouseholdConverter() Household household,
       @NullableDatetimeTimestampConverter() DateTime? birthday,
       @NullableDatetimeTimestampConverter() DateTime? createdAt});
 }
@@ -188,8 +172,6 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? name = null,
     Object? profileImageUrl = null,
     Object? occupation = null,
-    Object? sex = null,
-    Object? household = null,
     Object? birthday = freezed,
     Object? createdAt = freezed,
   }) {
@@ -230,14 +212,6 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.occupation
           : occupation // ignore: cast_nullable_to_non_nullable
               as String,
-      sex: null == sex
-          ? _value.sex
-          : sex // ignore: cast_nullable_to_non_nullable
-              as Sex,
-      household: null == household
-          ? _value.household
-          : household // ignore: cast_nullable_to_non_nullable
-              as Household,
       birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
@@ -263,8 +237,6 @@ class _$_User implements _User {
       this.name = '',
       this.profileImageUrl = '',
       this.occupation = '',
-      @SexConverter() this.sex = Sex.none,
-      @HouseholdConverter() this.household = Household.none,
       @NullableDatetimeTimestampConverter() this.birthday,
       @NullableDatetimeTimestampConverter() this.createdAt})
       : _contactIds = contactIds,
@@ -312,14 +284,8 @@ class _$_User implements _User {
   @override
   @JsonKey()
   final String occupation;
-  @override
-  @JsonKey()
-  @SexConverter()
-  final Sex sex;
-  @override
-  @JsonKey()
-  @HouseholdConverter()
-  final Household household;
+// @SexConverter() @Default(Sex.none) Sex sex,
+// @HouseholdConverter() @Default(Household.none) Household household,
   @override
   @NullableDatetimeTimestampConverter()
   final DateTime? birthday;
@@ -329,7 +295,7 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(uid: $uid, tokenId: $tokenId, isAdmin: $isAdmin, isDeleted: $isDeleted, contactIds: $contactIds, familyContactIds: $familyContactIds, name: $name, profileImageUrl: $profileImageUrl, occupation: $occupation, sex: $sex, household: $household, birthday: $birthday, createdAt: $createdAt)';
+    return 'User(uid: $uid, tokenId: $tokenId, isAdmin: $isAdmin, isDeleted: $isDeleted, contactIds: $contactIds, familyContactIds: $familyContactIds, name: $name, profileImageUrl: $profileImageUrl, occupation: $occupation, birthday: $birthday, createdAt: $createdAt)';
   }
 
   @override
@@ -351,9 +317,6 @@ class _$_User implements _User {
                 other.profileImageUrl == profileImageUrl) &&
             (identical(other.occupation, occupation) ||
                 other.occupation == occupation) &&
-            (identical(other.sex, sex) || other.sex == sex) &&
-            (identical(other.household, household) ||
-                other.household == household) &&
             (identical(other.birthday, birthday) ||
                 other.birthday == birthday) &&
             (identical(other.createdAt, createdAt) ||
@@ -373,8 +336,6 @@ class _$_User implements _User {
       name,
       profileImageUrl,
       occupation,
-      sex,
-      household,
       birthday,
       createdAt);
 
@@ -403,8 +364,6 @@ abstract class _User implements User {
           final String name,
           final String profileImageUrl,
           final String occupation,
-          @SexConverter() final Sex sex,
-          @HouseholdConverter() final Household household,
           @NullableDatetimeTimestampConverter() final DateTime? birthday,
           @NullableDatetimeTimestampConverter() final DateTime? createdAt}) =
       _$_User;
@@ -429,13 +388,8 @@ abstract class _User implements User {
   String get profileImageUrl;
   @override
   String get occupation;
-  @override
-  @SexConverter()
-  Sex get sex;
-  @override
-  @HouseholdConverter()
-  Household get household;
-  @override
+  @override // @SexConverter() @Default(Sex.none) Sex sex,
+// @HouseholdConverter() @Default(Household.none) Household household,
   @NullableDatetimeTimestampConverter()
   DateTime? get birthday;
   @override

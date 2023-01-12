@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:going_home_app/common/converters/datetime_to_timestamp_converter.dart.dart';
-import 'package:going_home_app/domain/user/enum/household.dart';
-import 'package:going_home_app/domain/user/enum/sex.dart';
+// import 'package:going_home_app/domain/user/enum/household.dart';
+// import 'package:going_home_app/domain/user/enum/sex.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -18,8 +18,8 @@ class User with _$User {
     @Default('') String name,
     @Default('') String profileImageUrl,
     @Default('') String occupation,
-    @SexConverter() @Default(Sex.none) Sex sex,
-    @HouseholdConverter() @Default(Household.none) Household household,
+    // @SexConverter() @Default(Sex.none) Sex sex,
+    // @HouseholdConverter() @Default(Household.none) Household household,
     @NullableDatetimeTimestampConverter() DateTime? birthday,
     @NullableDatetimeTimestampConverter() DateTime? createdAt,
   }) = _User;
@@ -29,4 +29,12 @@ class User with _$User {
   static String get colPath => '/private/users/v1';
 
   static String docPath(String uid) => '$colPath/$uid';
+}
+
+extension UserExt on User {
+  Map<String, dynamic> toDoc(User object) => <String, dynamic>{
+        ...object.toJson(),
+        'createdAt': object.createdAt ?? FieldValue.serverTimestamp(),
+        'updatesAt': FieldValue.serverTimestamp(),
+      };
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
-
-import 'package:geolocator/geolocator.dart';
+import 'package:going_home_app/pages/contact/notifier/contact_notifier.dart';
+import 'package:going_home_app/pages/contact/state/contact_state.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:location/location.dart';
 import 'package:going_home_app/common/packages/location_extention.dart';
 import 'package:going_home_app/domain/contact/contact_repository.dart';
 import 'package:going_home_app/domain/contact/models/contact.dart';
@@ -9,8 +11,6 @@ import 'package:going_home_app/domain/contact_location/contact_location_service.
 import 'package:going_home_app/domain/contact_location/models/contact_location.dart';
 import 'package:going_home_app/pages/auth/notifier/auth_notifier.dart';
 import 'package:going_home_app/pages/contact/state/contact_history_state.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:location/location.dart';
 
 final contactHistoryNotifierProvider = StateNotifierProvider<
     ContactHistoryNotifier, AsyncValue<ContactHistoryState>>(
@@ -40,13 +40,15 @@ class ContactHistoryNotifier
   final ContactLocationService _contactLocationService;
   final ContactLocationRepository _contactLocationRepository;
 
-  late StreamSubscription<LocationData> _locationSubscription;
+  StreamSubscription<LocationData>? _locationSubscription;
 
-  Future<void> init() async {}
+  Future<void> init() async {
+    await getContactLocationHistory();
+  }
 
   @override
   void dispose() {
-    _locationSubscription.cancel();
+    _locationSubscription?.cancel();
     super.dispose();
   }
 
@@ -54,25 +56,46 @@ class ContactHistoryNotifier
     state = const AsyncValue.loading();
   }
 
+  Future<void> getContactLocationHistory() async {
+    final stat = _ref.watch(contactNotifierProvider).asData?.value ??
+        const ContactState();
+    try {
+      final histories = await _contactLocationRepository
+          .getContactLocationHistories(stat.selectedContact.contactId);
+      state = AsyncValue.data(ContactHistoryState(histories: histories));
+    } catch (e, s) {
+      state = AsyncValue.error(e, s);
+      print('Failed to get contact location histories. $e \n\n $s');
+    }
+  }
+
   Future<void> startRecording(Contact contact) async {
     // locationのオン(最初の画面でpermissionを設定すること)
     _contactLocationService.allowGeolocation();
 
     try {
+      final stat = state.asData?.value ?? const ContactHistoryState();
       // isMatchedをfalseにする
-      final sentUser = (await _authNotifier.getMyUserForContact());
+      final sentUser = await _authNotifier.getMyUserForContact();
       await _contactRepository.updateContact(
         contact.copyWith(isMatched: false, sentUser: sentUser),
       );
+      await _contactLocationRepository.saveContactLocationHistory(
+        contact.contactId,
+        stat.locations,
+      );
+
       // locationの取得, 相手の位置情報もこれで取得して、同時にDBへ保存???
       // 事前にgoalとなる位置情報を設定する必要がある(list化して目的地を選択できるようにする)
       _locationSubscription =
           _contactLocationService.stream.listen((location) async {
-        final val = state.asData!.value;
         state = AsyncValue.data(
-          state.asData!.value.copyWith(
-            locations: [...val.locations, ContactLocation.toLocation(location)],
-            currentCreatedAt: val.currentCreatedAt ?? DateTime.now(),
+          stat.copyWith(
+            locations: [
+              ...stat.locations,
+              ContactLocation.toLocation(location)
+            ],
+            currentCreatedAt: stat.currentCreatedAt ?? DateTime.now(),
           ),
         );
 
@@ -91,13 +114,13 @@ class ContactHistoryNotifier
         if (gapMeter <= limitMeter) {
           // isMatchをtrueにする
           await _contactRepository
-              .updateContact(contact.copyWith(isMatched: false));
+              .updateContact(contact.copyWith(isMatched: true));
           if (gapMeter < 50) {
             // contactLocationHistoryをDBに保存
             // これは、5m以内（ほぼ到着）で保存した方がいいのか？
             await _contactLocationRepository.saveContactLocationHistory(
               contact.contactId,
-              state.asData!.value.locations,
+              stat.locations,
             );
           }
           // done
@@ -107,8 +130,8 @@ class ContactHistoryNotifier
           return;
         }
       });
-    } catch (e) {
-      print(e);
+    } catch (e, s) {
+      print('Failed to start recording. $e \n\n $s');
     }
   }
 }

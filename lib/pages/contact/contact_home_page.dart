@@ -11,6 +11,8 @@ import 'package:going_home_app/pages/contact/notifier/contact_notifier.dart';
 import 'package:going_home_app/pages/contact/state/contact_state.dart';
 import 'package:going_home_app/router.dart';
 import 'package:going_home_app/widgets/button/widely_button.dart';
+import 'package:going_home_app/widgets/dialog/single_dialog.dart';
+import 'package:going_home_app/widgets/modal/modal_bottom_sheet.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ContactHomePage extends ConsumerWidget {
@@ -19,7 +21,7 @@ class ContactHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final contactState = ref.watch(contactNotifierProvider);
-    final contactNotifier = ref.watch(contactNotifierProvider.notifier);
+    final contactNoti = ref.watch(contactNotifierProvider.notifier);
     final contactHistoryNoti =
         ref.watch(contactHistoryNotifierProvider.notifier);
 
@@ -40,12 +42,12 @@ class ContactHomePage extends ConsumerWidget {
       data: (contacts) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Going Home'),
+            title: const Text('もうつく'),
             leading: IconButton(
               icon: const Icon(Icons.add, size: 32),
               onPressed: () => showAddContactDialog(
                 context,
-                contactNotifier,
+                contactNoti,
                 contacts,
               ),
             ),
@@ -76,7 +78,8 @@ class ContactHomePage extends ConsumerWidget {
                         ? contactCard(
                             context,
                             contacts.contacts[i],
-                            contactNotifier,
+                            contactNoti,
+                            contactHistoryNoti,
                           )
                         : const SizedBox.shrink(),
                   const SizedBox(height: 30),
@@ -91,7 +94,8 @@ class ContactHomePage extends ConsumerWidget {
                         ? contactCard(
                             context,
                             contacts.contacts[i],
-                            contactNotifier,
+                            contactNoti,
+                            contactHistoryNoti,
                           )
                         : const SizedBox.shrink(),
                 ],
@@ -107,13 +111,26 @@ class ContactHomePage extends ConsumerWidget {
     BuildContext context,
     Contact contact,
     ContactNotifier noti,
+    ContactHistoryNotifier hiNoti,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: GestureDetector(
-        onTap: () => context.push(RoutePath.contact_history.toStr),
-        onLongPress: () => showNotificationDialog(context),
-        onDoubleTap: () => showNotificationDialog(context),
+        onTap: () => (contact.isMatched)
+            ? showAbortDialog(context)
+            : showNotificationDialog(context, contact, hiNoti),
+        onLongPress: () {
+          noti.setSelectedContact(contact);
+          const ModalBottomSheet().show(context);
+          // first releaseでは使用しない
+          // context.push(RoutePath.contact_history.toStr);
+        },
+        onDoubleTap: () {
+          noti.setSelectedContact(contact);
+          const ModalBottomSheet().show(context);
+          // first releaseでは使用しない
+          // context.push(RoutePath.contact_history.toStr);
+        },
         child: Card(
           elevation: 5,
           shape: RoundedRectangleBorder(
@@ -127,7 +144,7 @@ class ContactHomePage extends ConsumerWidget {
                 children: [
                   Text(noti.getContactName(contact)),
                   Text(
-                    '向かっています',
+                    (contact.isMatched) ? '' : '向かっています',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ],
@@ -139,7 +156,16 @@ class ContactHomePage extends ConsumerWidget {
     );
   }
 
-  void showNotificationDialog(BuildContext context) {
+  void showAbortDialog(BuildContext context) {
+    const SingleDialog(title: '向かっている途中なので、使用できません。', buttonText: 'ok')
+        .show(context);
+  }
+
+  void showNotificationDialog(
+    BuildContext context,
+    Contact contact,
+    ContactHistoryNotifier noti,
+  ) {
     showDialog(
       context: context,
       barrierColor: Colors.black.withOpacity(0.7),
@@ -148,9 +174,8 @@ class ContactHomePage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                // TODO: 相手に通知
-                // TODO: GPSをオンにして、1キロ圏内になったら再度通知する
+              onPressed: () async {
+                await noti.startRecording(contact);
               },
               style: ElevatedButton.styleFrom(
                 padding:
@@ -159,9 +184,9 @@ class ContactHomePage extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(64),
                 ),
               ),
-              child: const Text(
-                '今から帰ります',
-                style: TextStyle(
+              child: Text(
+                contact.word,
+                style: const TextStyle(
                   fontSize: 30,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -195,78 +220,84 @@ class ContactHomePage extends ConsumerWidget {
     showModalBottomSheet(
       context: context,
       builder: (context) => Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16).copyWith(top: 32),
-              child: WidelyButton(
-                label: '自分のIDをコピーする',
-                height: 54,
-                textStyle: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: kWhite),
-                onPressed: () async {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'IDをコピーしました',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(color: kWhite, fontSize: 16),
+        body: Consumer(builder: (context, ref, child) {
+          final contact =
+              ref.watch(contactNotifierProvider).asData?.value ?? state;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16).copyWith(top: 32),
+                child: WidelyButton(
+                  label: '自分のIDをコピーする',
+                  height: 54,
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .headline5!
+                      .copyWith(color: kWhite),
+                  onPressed: () async {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'IDをコピーしました',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: kWhite, fontSize: 16),
+                        ),
                       ),
-                    ),
-                  );
-                  await Clipboard.setData(ClipboardData(text: noti.myUid));
-                  await FlutterShare.share(
-                    title: '自分のIDを共有する',
-                    text: noti.myUid,
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'IDまたは名前を検索',
+                    );
+                    await Clipboard.setData(ClipboardData(text: noti.myUid));
+                    await FlutterShare.share(
+                      title: '自分のIDを共有する',
+                      text: noti.myUid,
+                    );
+                  },
                 ),
-                onSubmitted: (value) => noti.searchContactUser(value),
               ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 100,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: const CircleAvatar(
-                      radius: 24,
-                      backgroundImage:
-                          NetworkImage('https://picsum.photos/200/300'),
-                    ),
-                    title: const Text('名前'),
-                    subtitle: const Text('ID'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        noti.addContactUser(state.searchedUsers[index]);
-                        const AddContactModal().show(context);
-                      },
-                    ),
-                  );
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'IDまたは名前を検索',
+                  ),
+                  onSubmitted: (value) => noti.searchContactUser(value),
+                ),
               ),
-            ),
-          ],
-        ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: contact.searchedUsers.length,
+                  itemBuilder: (context, index) {
+                    final user = contact.searchedUsers[index];
+                    return ListTile(
+                      leading: CircleAvatar(
+                        radius: 24,
+                        backgroundImage: (user.profileImageUrl.isEmpty)
+                            ? const NetworkImage('https://picsum.photos/200')
+                            : NetworkImage(user.profileImageUrl),
+                      ),
+                      title: Text(user.name),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          // TODO: コメント外す
+                          noti.addContactUser(user);
+                          const AddContactModal().show(context);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

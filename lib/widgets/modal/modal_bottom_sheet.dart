@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:going_home_app/common/color.dart';
 import 'package:going_home_app/common/consts.dart';
+import 'package:going_home_app/pages/contact/notifier/contact_notifier.dart';
+import 'package:going_home_app/widgets/dialog/form_dialog.dart';
+import 'package:going_home_app/widgets/dialog/single_dialog.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ModalBottomSheet extends StatelessWidget {
+class ModalBottomSheet extends ConsumerWidget {
   const ModalBottomSheet({super.key});
 
   void show(BuildContext context) {
@@ -18,8 +23,38 @@ class ModalBottomSheet extends StatelessWidget {
     );
   }
 
+  Future<void> inputWordDialog(
+    BuildContext context,
+    ContactNotifier noti,
+  ) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) => FormDialog(
+        titleText: '通知する文言を更新する',
+        memoText: '登録後も変更ができます。',
+        hintText: '名前',
+        textController: noti.wordController,
+        onPressed: () async {
+          if (noti.wordController.text.isEmpty) {
+            const SingleDialog(
+              title: '名前を入力してください',
+              buttonText: 'OK',
+            ).show(context);
+            return;
+          }
+          await noti.updateWord();
+          context.pop();
+          return;
+        },
+      ),
+    );
+    return;
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stat = ref.watch(contactNotifierProvider).asData!.value;
+    final noti = ref.watch(contactNotifierProvider.notifier);
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.28,
       child: Padding(
@@ -31,10 +66,12 @@ class ModalBottomSheet extends StatelessWidget {
             SizedBox(height: Consts.space4x(4)),
             TextButton(
               child: Text(
-                '〜〜さんを削除する',
+                '${stat.selectedContact.contactName}との連絡先を削除する',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await noti.removeContactUser(stat.selectedContact.contactId);
+              },
             ),
             const Divider(color: kDarkGray),
             TextButton(
@@ -42,15 +79,19 @@ class ModalBottomSheet extends StatelessWidget {
                 '文言を編集する',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await inputWordDialog(context, noti);
+              },
             ),
             const Divider(color: kDarkGray),
             TextButton(
               child: Text(
-                'お気に入りに追加する',
+                (stat.selectedContact.isFavorite) ? 'お気に入りから外す' : 'お気に入りに追加する',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
-              onPressed: () {},
+              onPressed: () {
+                noti.updateIsFavorite();
+              },
             ),
             SizedBox(height: Consts.space4x(10)),
           ],

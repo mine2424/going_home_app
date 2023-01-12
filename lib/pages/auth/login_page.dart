@@ -43,7 +43,7 @@ class LoginPage extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Image.asset('assets/images/going_home_signup_logo.png'),
+                Image.asset('assets/images/going_home_logo.png'),
                 SizedBox(
                   width: double.infinity,
                   height: 48,
@@ -95,7 +95,7 @@ class LoginPage extends ConsumerWidget {
                 WidelyButton(
                   label: 'メールアドレスでログインする',
                   onPressed: () async {
-                    await authNotifier.createUserWithEmailAndPassword();
+                    await authNotifier.signInWithEmailAndPassword();
                     context.pushReplacement(RoutePath.contact_home.toStr);
                   },
                   backgroundColor: kDarkGray,

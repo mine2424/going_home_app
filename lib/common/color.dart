@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 共通
-// const kPrimaryColor = Color(0xFF9DD456);
 const kPrimaryColor = Color.fromARGB(255, 243, 158, 88);
 const kLightPrimaryColor = Color.fromARGB(255, 242, 186, 140);
 const kSecondaryColor = Color(0xFFEEF082);

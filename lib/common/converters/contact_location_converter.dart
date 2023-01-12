@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:going_home_app/common/converters/datetime_to_timestamp_converter.dart.dart';
 import 'package:going_home_app/domain/contact_location/models/contact_location.dart';
 
 export 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,7 +27,8 @@ class ContactLocationConverter
           value['elapsedRealtimeUncertaintyNanos'] as double,
       satelliteNumber: value['satelliteNumber'] as int,
       provider: value['provider'] as String,
-      createdAt: value['createdAt'] as DateTime,
+      createdAt: const NullableDatetimeTimestampConverter()
+          .fromJson(value['createdAt']),
     );
   }
 
